@@ -12,10 +12,10 @@ public class test {
 		
 		try {
 			Statement stLienBD = connect.createStatement();
-			String req = "SHOW DATABASES";
+			String req = "SELECT * FROM USERS";
 			ResultSet resultat = stLienBD.executeQuery(req);
 			while(resultat.next()) {
-				System.out.println(resultat.getString(1));
+				System.out.println(resultat.getString(1) + "\t" + resultat.getString(2) + "\t" + resultat.getString(3));
 			}
 			
 			if(connect != null) {
