@@ -36,16 +36,16 @@ public class DaoDriveExpress
 		
 		Properties props = new Properties();
 		try{
-			FileInputStream fis = new FileInputStream("conf.properties");
+			FileInputStream fis = new FileInputStream("./model/conf.properties");
 			props.load(fis);
 		}catch(Exception e){
 			e.getStackTrace();
 		}
-		
+
 		properties.put("driver", props.getProperty("jdbc.driver"));
 		properties.put("url", props.getProperty("jdbc.url"));
 		properties.put("login", props.getProperty("jdbc.login"));
-		properties.put("url", props.getProperty("jdbc.password"));
+		properties.put("password", props.getProperty("jdbc.password"));
 		
 		return properties;
 	}
