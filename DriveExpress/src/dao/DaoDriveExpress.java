@@ -27,6 +27,17 @@ public class DaoDriveExpress
 			e.printStackTrace();
 		}
 		
+		try {
+			Statement stLienBD = connect.createStatement();
+			String req = "USE bch5pl5adcyod7rdbeyl";
+			ResultSet resultat = stLienBD.executeQuery(req);
+			while(resultat.next()) {
+				System.out.println(resultat.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return connect;
 	}
 	
