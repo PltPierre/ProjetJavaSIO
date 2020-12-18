@@ -61,4 +61,24 @@ public class DaoDriveExpress
 		return properties;
 	}
 	
+	public static String getFullNameUser(String mail, String mdp, Connection connect) {
+		String res;
+		res = "";
+		try {
+			Statement stLienBD = connect.createStatement();
+			String req = "SELECT PRENOMUSER, NOMUSER FROM USERS WHERE MAILUSER = '" + mail + "' AND MDPUSER = '" + mdp + "';";
+			ResultSet resultat = stLienBD.executeQuery(req);
+			while(resultat.next()) {
+				res = resultat.getString(1) + " " + resultat.getString(2);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(res.equals("")) {
+			res = "Utilisateur inconnu";
+		}
+		
+		return res;
+	}
 }
