@@ -1,37 +1,39 @@
 package ihm;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import dao.DaoDriveExpress;
 
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
-import java.awt.SystemColor;
-import javax.swing.JTextField;
-import javax.swing.JButton;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainPage extends JFrame {
 
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private Connection connect;
 	private JTextField txtMail;
 	private JTextField txtMDP;
-	private Connection connect;
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public MainPage() {
 		
-		this.connect = DaoDriveExpress.SQLConnection();
+		
+		connect = DaoDriveExpress.SQLConnection();
 		
 		setBackground(Color.WHITE);
 		setTitle("DriveExpress");
@@ -135,6 +137,21 @@ public class MainPage extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getSource()==btnValidationConnection) {
+					if(txtMDP.getText().isEmpty() || txtMail.getText().isEmpty()) {
+						lblDbConnection.setText("Veuillez renseigner tout les champs");
+					}
+					else {
+						lblDbConnection.setText(DaoDriveExpress.getFullNameUser(txtMail.getText(), txtMDP.getText(), connect));
+					}
+				}
+			}
+		});
+		
+
+		txtMDP.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 					if(txtMDP.getText().isEmpty() || txtMail.getText().isEmpty()) {
 						lblDbConnection.setText("Veuillez renseigner tout les champs");
 					}
