@@ -4,29 +4,27 @@ import java.sql.Date;
 
 public class Paiement {
 
-	private int idPaiement;
-	private double montant;
-	private Date datePaiement;
-	
-	public Paiement(int idPaiement, double montant, Date datePaiement) {
+    private int idPaiement;
+    private double montant;
+    private Date datePaiement;
 
-		this.idPaiement = idPaiement;
-		this.montant = montant;
-		this.datePaiement = datePaiement;
-	}
+    public Paiement(int idPaiement, double montant, Date datePaiement) {
 
-	public int getIdPaiement() {
-		return this.idPaiement;
-	}
+	this.idPaiement = idPaiement;
+	this.montant = montant;
+	this.datePaiement = datePaiement;
+    }
 
-	public double getMontant() {
-		return this.montant;
-	}
+    public int getIdPaiement() {
+	return this.idPaiement;
+    }
 
-	public Date getDatePaiement() {
-		return this.datePaiement;
-	}
-	
-	
-	
+    public double getMontant() {
+	return this.montant;
+    }
+
+    public Date getDatePaiement() {
+	return this.datePaiement;
+    }
+
 }

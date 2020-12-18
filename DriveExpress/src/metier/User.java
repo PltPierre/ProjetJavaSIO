@@ -1,59 +1,56 @@
 package metier;
 
 public class User {
-	private int idUser;
-	private String nomUser;
-	private String prenomUser;
-	private String adresse;
-	private String ville;
-	private int cpUser;
-	private int numTel;
-	private String userMail;
-	
-	public User(int iDUser, String nomUser, String prenomUser, String adresse, String ville, int cP, int numTel, String userMail) {
-		this.idUser = iDUser;
-		this.nomUser = nomUser;
-		this.prenomUser = prenomUser;
-		this.adresse = adresse;
-		this.ville = ville;
-		this.cpUser = cP;
-		this.numTel = numTel;
-		this.userMail = userMail;
-	}
+    private int idUser;
+    private String nomUser;
+    private String prenomUser;
+    private String adresse;
+    private String ville;
+    private int cpUser;
+    private int numTel;
+    private String userMail;
 
-	public int getIDUser() {
-		return this.idUser;
-	}
+    public User(int iDUser, String nomUser, String prenomUser, String adresse, String ville, int cP, int numTel, String userMail) {
+	this.idUser = iDUser;
+	this.nomUser = nomUser;
+	this.prenomUser = prenomUser;
+	this.adresse = adresse;
+	this.ville = ville;
+	this.cpUser = cP;
+	this.numTel = numTel;
+	this.userMail = userMail;
+    }
 
-	public String getNomUser() {
-		return this.nomUser;
-	}
+    public int getIDUser() {
+	return this.idUser;
+    }
 
-	public String getPrenomUser() {
-		return this.prenomUser;
-	}
+    public String getNomUser() {
+	return this.nomUser;
+    }
 
-	public String getAdresse() {
-		return this.adresse;
-	}
+    public String getPrenomUser() {
+	return this.prenomUser;
+    }
 
-	public String getVille() {
-		return this.ville;
-	}
+    public String getAdresse() {
+	return this.adresse;
+    }
 
-	public int getCP() {
-		return cpUser;
-	}
+    public String getVille() {
+	return this.ville;
+    }
 
-	public int getNumTel() {
-		return numTel;
-	}
+    public int getCP() {
+	return cpUser;
+    }
 
-	public String getUserMail() {
-		return userMail;
-	}
-	
-	
-	
-	
+    public int getNumTel() {
+	return numTel;
+    }
+
+    public String getUserMail() {
+	return userMail;
+    }
+
 }

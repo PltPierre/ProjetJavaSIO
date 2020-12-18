@@ -4,29 +4,26 @@ import java.sql.*;
 
 public class Panier {
 
-	private int idPanier;
-	private User user;
-	private Date dateCreation;
-	
-	public Panier(int idPanier, metier.User user, Date dateCreation) {
-		this.idPanier = idPanier;
-		this.user = user;
-		this.dateCreation = dateCreation;
-	}
+    private int idPanier;
+    private User user;
+    private Date dateCreation;
 
-	public int getIdPanier() {
-		return this.idPanier;
-	}
+    public Panier(int idPanier, metier.User user, Date dateCreation) {
+	this.idPanier = idPanier;
+	this.user = user;
+	this.dateCreation = dateCreation;
+    }
 
-	public User getUser() {
-		return this.user;
-	}
+    public int getIdPanier() {
+	return this.idPanier;
+    }
 
-	public Date getDateCreation() {
-		return this.dateCreation;
-	}
-	
-	
-	
-	
+    public User getUser() {
+	return this.user;
+    }
+
+    public Date getDateCreation() {
+	return this.dateCreation;
+    }
+
 }
