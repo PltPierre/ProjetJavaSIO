@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class MainPage extends JFrame {
 
@@ -27,8 +28,10 @@ public class MainPage extends JFrame {
     private JTextField txtMail;
     private JTextField txtMDP;
     private JButton btnCreerUnCompte;
+    private int mouseX;
+    private int mouseY;
 
-    public MainPage(Connection connection) {
+    public MainPage(Connection connection, int posX, int posY) {
 	if (this.connect == null) {
 	    connect = connection;
 	}
@@ -37,7 +40,14 @@ public class MainPage extends JFrame {
 	setTitle("DriveExpress");
 	setResizable(false);
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setBounds(100, 100, 1080, 624);
+	
+	if(posX != 0 && posY != 0) {
+	    setBounds(posX, posY, 1080, 624);
+	}
+	else {
+	    setBounds(100, 100, 1080, 624);
+	}
+	
 	contentPane = new JPanel();
 	contentPane.setBackground(Color.WHITE);
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -50,6 +60,7 @@ public class MainPage extends JFrame {
 	contentPane.add(leftSide);
 
 	JPanel topBar = new JPanel();
+	
 	topBar.setBackground(SystemColor.activeCaptionBorder);
 	topBar.setBounds(0, 0, 1086, 27);
 	contentPane.add(topBar);
@@ -172,12 +183,32 @@ public class MainPage extends JFrame {
 	    @Override
 	    public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnCreerUnCompte) {
-		    InscriptionPage inscP = new InscriptionPage(connect);
+		    InscriptionPage inscP = new InscriptionPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 		    inscP.setUndecorated(true);
 		    inscP.setVisible(true);
 		    dispose();
 		}
 	    }
 	});
+	
+	topBar.addMouseMotionListener(new MouseMotionAdapter() {
+		@Override
+		public void mouseDragged(MouseEvent e) {
+		    int coorX = e.getXOnScreen();
+		    int coorY = e.getYOnScreen();
+		    setLocation(getLocationOnScreen().x + coorX-mouseX, getLocationOnScreen().y + coorY-mouseY);
+		    mouseX = coorX;
+		    mouseY = coorY;
+		}
+	});
+	
+	topBar.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mousePressed(MouseEvent e) {
+		    mouseX = e.getXOnScreen();
+		    mouseY = e.getYOnScreen();
+		}
+	});
+	
     }
 }

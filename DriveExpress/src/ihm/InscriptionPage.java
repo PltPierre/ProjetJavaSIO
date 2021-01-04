@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class InscriptionPage extends JFrame {
 
@@ -39,13 +40,22 @@ public class InscriptionPage extends JFrame {
     private JButton btnCreerCompte;
     private Connection connect;
     private JButton btnRetour;
+    private int mouseX;
+    private int mouseY;
 
-    public InscriptionPage(Connection connection) {
+    public InscriptionPage(Connection connection, int posX, int posY) {
 	this.connect = connection;
 
 	setResizable(false);
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setBounds(100, 100, 1080, 624);
+	
+	if(posX != 0 && posY != 0) {
+	    setBounds(posX, posY, 1080, 624);
+	}
+	else {
+	    setBounds(100, 100, 1080, 624);
+	}
+	
 	contentPane = new JPanel();
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
@@ -203,12 +213,31 @@ public class InscriptionPage extends JFrame {
 	    @Override
 	    public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == btnRetour) {
-		    MainPage mp = new MainPage(connect);
+		    MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 		    mp.setUndecorated(true);
 		    mp.setVisible(true);
 		    dispose();
 		}
 	    }
+	});
+	
+	topBar.addMouseMotionListener(new MouseMotionAdapter() {
+		@Override
+		public void mouseDragged(MouseEvent e) {
+		    int coorX = e.getXOnScreen();
+		    int coorY = e.getYOnScreen();
+		    setLocation(getLocationOnScreen().x + coorX-mouseX, getLocationOnScreen().y + coorY-mouseY);
+		    mouseX = coorX;
+		    mouseY = coorY;
+		}
+	});
+	
+	topBar.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mousePressed(MouseEvent e) {
+		    mouseX = e.getXOnScreen();
+		    mouseY = e.getYOnScreen();
+		}
 	});
 
     }
