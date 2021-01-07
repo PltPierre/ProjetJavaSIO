@@ -145,7 +145,7 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// Bouton Créer un compte va vers pas d'inscription
+		// Bouton Créer un compte va vers page d'inscription
 		if (e.getSource() == btnCreerUnCompte) {
 			InscriptionPage inscP = new InscriptionPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 			inscP.setUndecorated(true);
