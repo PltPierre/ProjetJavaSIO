@@ -82,9 +82,10 @@ public class DaoDriveExpress {
 		return res;
 	}
 
-	public static String inscriptionUser(String mail, String Prenom, String Nom, String Tel, String adress, String ville, String CP) {
+	public static String inscriptionUser(String mail, String Prenom, String Nom, String Tel, String adress,
+			String ville, String CP) {
 		String res = "";
-		
+
 		return res;
 	}
 }
