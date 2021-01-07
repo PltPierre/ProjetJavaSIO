@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.sql.*;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.regex.*;
 
 public class DaoDriveExpress {
 	private static final TreeMap<String, String> properties = DaoDriveExpress.GetDatabaseProperties();
@@ -80,6 +81,13 @@ public class DaoDriveExpress {
 		}
 
 		return res;
+	}
+
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+	public static boolean validate(String emailStr) {
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+		return matcher.find();
 	}
 
 	public static String inscriptionUser(String mail, String Prenom, String Nom, String Tel, String adress,

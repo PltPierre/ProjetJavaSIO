@@ -198,6 +198,10 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 			mp.setVisible(true);
 			dispose();
 		}
+		
+		if(e.getSource() == btnCreerCompte) {
+			
+		}
 	}
 
 	@Override
