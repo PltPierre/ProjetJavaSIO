@@ -8,7 +8,12 @@ import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import dao.DaoDriveExpress;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -200,7 +205,67 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 		}
 		
 		if(e.getSource() == btnCreerCompte) {
+		    boolean bon = false;
+		    System.out.println(!this.txtAdresse.getText().equals(""));
+		    if(DaoDriveExpress.validate(this.txtMail.getText())) {
+			this.txtMail.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+			bon = true;
+		    }
+		    else {
+			this.txtMail.setBorder(new LineBorder(Color.RED, 2));
+		    }
+		    
+		    if(this.txtTel.getText().length() == 10 && this.txtTel.getText().chars().allMatch(Character::isDigit)) {
+			bon = true;
+			this.txtTel.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+		    }
+		    else {
+			this.txtTel.setBorder(new LineBorder(Color.RED, 2));
+		    }
+		    
+		    if(!this.txtAdresse.getText().equals("")) {
+			bon = true;
+			this.txtAdresse.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+		    }
+		    else {
+			this.txtAdresse.setBorder(new LineBorder(Color.RED, 2));
+		    }
+		    
+		    if(!this.txtPrenom.getText().equals("")) {
+			bon = true;
+			this.txtPrenom.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+		    }
+		    else {
+			this.txtPrenom.setBorder(new LineBorder(Color.RED, 2));
+		    }
+		    
+		    if(!this.txtNom.getText().equals("")) {
+			bon = true;
+			this.txtNom.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+		    }
+		    else {
+			this.txtNom.setBorder(new LineBorder(Color.RED, 2));
+		    }
+		    
+		    if(!this.txtCP.getText().equals("") && this.txtCP.getText().chars().allMatch(Character::isDigit)) {
+			bon = true;
+			this.txtCP.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+		    }
+		    else {
+			this.txtCP.setBorder(new LineBorder(Color.RED, 2));
+		    }
+		    
+		    if(!this.txtVille.getText().equals("")) {
+			bon = true;
+			this.txtVille.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+		    }
+		    else {
+			this.txtVille.setBorder(new LineBorder(Color.RED, 2));
+		    }
+		    
+		    if(bon) {
 			
+		    }
 		}
 	}
 
