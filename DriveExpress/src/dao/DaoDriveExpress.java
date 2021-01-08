@@ -110,9 +110,17 @@ public class DaoDriveExpress {
 	return res;
     }
 
-    public static String inscriptionUser(User user) {
+    public static String inscriptionUser(Connection connect, User user) {
 	String res = "";
-
+	
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "INSERT INTO USERS VALUES(" + user.getIDUser() + ", '" + user.getNomUser() + "','" + user.getPrenomUser() + "','" + user.getUserMail() + "','" + user.getPasswordUser() + "','" + user.getNumTel() + "','" + user.getAdresse() + "','" + user.getCP() + "','" + user.getVille() + "')";
+	    stLienBD.executeUpdate(req);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	
 	return res;
     }
 }
