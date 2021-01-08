@@ -9,8 +9,9 @@ public class User {
     private int cpUser;
     private int numTel;
     private String userMail;
+    private String passwordUser;
 
-    public User(int iDUser, String nomUser, String prenomUser, String adresse, String ville, int cP, int numTel, String userMail) {
+    public User(int iDUser, String nomUser, String prenomUser, String adresse, String ville, int cP, int numTel, String userMail, String passwordUser) {
 	this.idUser = iDUser;
 	this.nomUser = nomUser;
 	this.prenomUser = prenomUser;
@@ -19,6 +20,7 @@ public class User {
 	this.cpUser = cP;
 	this.numTel = numTel;
 	this.userMail = userMail;
+	this.passwordUser = passwordUser;
     }
 
     public int getIDUser() {
@@ -52,5 +54,11 @@ public class User {
     public String getUserMail() {
 	return userMail;
     }
+
+    public String getPasswordUser() {
+        return passwordUser;
+    }
+    
+    
 
 }
