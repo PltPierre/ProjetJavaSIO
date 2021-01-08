@@ -6,12 +6,12 @@ public class User {
     private String prenomUser;
     private String adresse;
     private String ville;
-    private int cpUser;
-    private int numTel;
+    private String cpUser;
+    private String numTel;
     private String userMail;
     private String passwordUser;
 
-    public User(int iDUser, String nomUser, String prenomUser, String adresse, String ville, int cP, int numTel, String userMail, String passwordUser) {
+    public User(int iDUser, String nomUser, String prenomUser, String adresse, String ville, String cP, String numTel, String userMail, String passwordUser) {
 	this.idUser = iDUser;
 	this.nomUser = nomUser;
 	this.prenomUser = prenomUser;
@@ -43,11 +43,11 @@ public class User {
 	return this.ville;
     }
 
-    public int getCP() {
+    public String getCP() {
 	return cpUser;
     }
 
-    public int getNumTel() {
+    public String getNumTel() {
 	return numTel;
     }
 
