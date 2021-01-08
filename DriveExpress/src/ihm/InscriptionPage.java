@@ -272,10 +272,17 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	    }
 
 	    if (bon) {
-		DaoDriveExpress.inscriptionUser(connect, new User(DaoDriveExpress.getLastIDUser(connect), this.txtNom.getText(),
-			this.txtPrenom.getText(), this.txtAdresse.getText(), this.txtVille.getText(),
-			this.txtCP.getText(), this.txtTel.getText(), this.txtMail.getText(),
-			this.txtPassword.getText()));
+		DaoDriveExpress.inscriptionUser(connect,
+			new User(DaoDriveExpress.getLastIDUser(connect) + 1, this.txtNom.getText(),
+				this.txtPrenom.getText(), this.txtAdresse.getText(), this.txtVille.getText(),
+				this.txtCP.getText(), this.txtTel.getText(), this.txtMail.getText(),
+				this.txtPassword.getText()));
+
+		//Temporaire
+		MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
+		mp.setUndecorated(true);
+		mp.setVisible(true);
+		dispose();
 	    }
 	}
     }
