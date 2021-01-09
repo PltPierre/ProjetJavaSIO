@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.sql.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +19,7 @@ import metier.User;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -28,6 +31,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
     private JPanel contentPane;
     private JPanel leftSide;
     private JPanel topBar;
+    private JPanel rightSide;
     private JLabel lblExitBtn;
     private JLabel lblMail;
     private JTextField txtMail;
@@ -50,6 +54,8 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
     private int mouseY;
     private JLabel lblPassword;
     private JTextField txtPassword;
+    private JPanel SuccessPanel;
+    private JLabel lblGif;
 
     public InscriptionPage(Connection connection, int posX, int posY) {
 	this.connect = connection;
@@ -67,6 +73,11 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
 	contentPane.setLayout(null);
+
+	rightSide = new JPanel();
+	rightSide.setBounds(534, 26, 552, 597);
+	contentPane.add(rightSide);
+	rightSide.setLayout(null);
 
 	leftSide = new JPanel();
 	leftSide.setBackground(SystemColor.windowBorder);
@@ -94,87 +105,87 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 
 	lblMail = new JLabel("Mail");
 	lblMail.setFont(new Font("Arial", Font.PLAIN, 16));
-	lblMail.setHorizontalAlignment(SwingConstants.CENTER);
-	lblMail.setBounds(567, 51, 46, 14);
-	contentPane.add(lblMail);
+	lblMail.setHorizontalAlignment(SwingConstants.LEFT);
+	lblMail.setBounds(43, 11, 414, 14);
+	rightSide.add(lblMail);
 
 	txtMail = new JTextField();
 	txtMail.setFont(new Font("Arial", Font.PLAIN, 16));
-	txtMail.setBounds(577, 76, 414, 35);
-	contentPane.add(txtMail);
+	txtMail.setBounds(43, 36, 414, 35);
+	rightSide.add(txtMail);
 	txtMail.setColumns(10);
 
 	lblPrenom = new JLabel("Pr\u00E9nom");
-	lblPrenom.setHorizontalAlignment(SwingConstants.CENTER);
+	lblPrenom.setHorizontalAlignment(SwingConstants.LEFT);
 	lblPrenom.setFont(new Font("Arial", Font.PLAIN, 16));
-	lblPrenom.setBounds(576, 122, 55, 14);
-	contentPane.add(lblPrenom);
+	lblPrenom.setBounds(43, 80, 414, 14);
+	rightSide.add(lblPrenom);
 
 	txtPrenom = new JTextField();
 	txtPrenom.setFont(new Font("Arial", Font.PLAIN, 16));
 	txtPrenom.setColumns(10);
-	txtPrenom.setBounds(577, 147, 414, 35);
-	contentPane.add(txtPrenom);
+	txtPrenom.setBounds(43, 101, 414, 35);
+	rightSide.add(txtPrenom);
 
 	lblNom = new JLabel("Nom");
-	lblNom.setHorizontalAlignment(SwingConstants.CENTER);
+	lblNom.setHorizontalAlignment(SwingConstants.LEFT);
 	lblNom.setFont(new Font("Arial", Font.PLAIN, 16));
-	lblNom.setBounds(573, 193, 40, 14);
-	contentPane.add(lblNom);
+	lblNom.setBounds(43, 147, 414, 14);
+	rightSide.add(lblNom);
 
 	txtNom = new JTextField();
 	txtNom.setFont(new Font("Arial", Font.PLAIN, 16));
 	txtNom.setColumns(10);
-	txtNom.setBounds(577, 218, 414, 35);
-	contentPane.add(txtNom);
+	txtNom.setBounds(43, 172, 414, 35);
+	rightSide.add(txtNom);
 
 	lblTel = new JLabel("T\u00E9l\u00E9phone");
-	lblTel.setHorizontalAlignment(SwingConstants.CENTER);
+	lblTel.setHorizontalAlignment(SwingConstants.LEFT);
 	lblTel.setFont(new Font("Arial", Font.PLAIN, 16));
-	lblTel.setBounds(577, 264, 73, 19);
-	contentPane.add(lblTel);
+	lblTel.setBounds(43, 218, 414, 19);
+	rightSide.add(lblTel);
 
 	txtTel = new JTextField();
 	txtTel.setFont(new Font("Arial", Font.PLAIN, 16));
 	txtTel.setColumns(10);
-	txtTel.setBounds(577, 289, 414, 35);
-	contentPane.add(txtTel);
+	txtTel.setBounds(43, 243, 414, 35);
+	rightSide.add(txtTel);
 
 	lblAdresse = new JLabel("Adresse");
-	lblAdresse.setHorizontalAlignment(SwingConstants.CENTER);
+	lblAdresse.setHorizontalAlignment(SwingConstants.LEFT);
 	lblAdresse.setFont(new Font("Arial", Font.PLAIN, 16));
-	lblAdresse.setBounds(577, 335, 66, 19);
-	contentPane.add(lblAdresse);
+	lblAdresse.setBounds(43, 289, 414, 19);
+	rightSide.add(lblAdresse);
 
 	txtAdresse = new JTextField();
 	txtAdresse.setFont(new Font("Arial", Font.PLAIN, 16));
 	txtAdresse.setColumns(10);
-	txtAdresse.setBounds(577, 365, 414, 35);
-	contentPane.add(txtAdresse);
+	txtAdresse.setBounds(43, 314, 414, 35);
+	rightSide.add(txtAdresse);
 
 	lblVille = new JLabel("Ville");
-	lblVille.setHorizontalAlignment(SwingConstants.CENTER);
+	lblVille.setHorizontalAlignment(SwingConstants.LEFT);
 	lblVille.setFont(new Font("Arial", Font.PLAIN, 16));
-	lblVille.setBounds(567, 411, 64, 19);
-	contentPane.add(lblVille);
+	lblVille.setBounds(43, 363, 169, 19);
+	rightSide.add(lblVille);
 
 	txtVille = new JTextField();
 	txtVille.setFont(new Font("Arial", Font.PLAIN, 16));
 	txtVille.setColumns(10);
-	txtVille.setBounds(577, 441, 169, 35);
-	contentPane.add(txtVille);
+	txtVille.setBounds(43, 388, 169, 35);
+	rightSide.add(txtVille);
 
 	txtCP = new JTextField();
 	txtCP.setFont(new Font("Arial", Font.PLAIN, 16));
 	txtCP.setColumns(10);
-	txtCP.setBounds(822, 441, 169, 35);
-	contentPane.add(txtCP);
+	txtCP.setBounds(288, 388, 169, 35);
+	rightSide.add(txtCP);
 
 	lblCodePoste = new JLabel("Code Postal");
-	lblCodePoste.setHorizontalAlignment(SwingConstants.CENTER);
+	lblCodePoste.setHorizontalAlignment(SwingConstants.LEFT);
 	lblCodePoste.setFont(new Font("Arial", Font.PLAIN, 16));
-	lblCodePoste.setBounds(822, 411, 87, 19);
-	contentPane.add(lblCodePoste);
+	lblCodePoste.setBounds(288, 363, 169, 19);
+	rightSide.add(lblCodePoste);
 
 	btnCreerCompte = new JButton("Cr\u00E9er un compte");
 	btnCreerCompte.addMouseListener(this);
@@ -183,8 +194,8 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	btnCreerCompte.setFocusable(false);
 	btnCreerCompte.setBorderPainted(false);
 	btnCreerCompte.setBackground(Color.GREEN);
-	btnCreerCompte.setBounds(822, 559, 169, 43);
-	contentPane.add(btnCreerCompte);
+	btnCreerCompte.setBounds(288, 524, 169, 43);
+	rightSide.add(btnCreerCompte);
 
 	btnRetour = new JButton("Retour");
 	btnRetour.addMouseListener(this);
@@ -193,33 +204,49 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	btnRetour.setFocusable(false);
 	btnRetour.setBorderPainted(false);
 	btnRetour.setBackground(Color.GRAY);
-	btnRetour.setBounds(577, 559, 169, 43);
-	contentPane.add(btnRetour);
+	btnRetour.setBounds(43, 524, 169, 43);
+	rightSide.add(btnRetour);
 
 	lblPassword = new JLabel("Mot de Passe");
-	lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
+	lblPassword.setHorizontalAlignment(SwingConstants.LEFT);
 	lblPassword.setFont(new Font("Arial", Font.PLAIN, 16));
-	lblPassword.setBounds(567, 487, 124, 19);
-	contentPane.add(lblPassword);
+	lblPassword.setBounds(43, 434, 414, 19);
+	rightSide.add(lblPassword);
 
 	txtPassword = new JTextField();
 	txtPassword.setFont(new Font("Arial", Font.PLAIN, 16));
 	txtPassword.setColumns(10);
-	txtPassword.setBounds(577, 513, 414, 35);
-	contentPane.add(txtPassword);
+	txtPassword.setBounds(43, 461, 414, 35);
+	rightSide.add(txtPassword);
+
+	SuccessPanel = new JPanel();
+	SuccessPanel.setBounds(-12, 26, 1098, 612);
+	SuccessPanel.setBackground(new Color(236, 234, 236));
+	contentPane.add(SuccessPanel);
+	SuccessPanel.setLayout(null);
+
+	lblGif = new JLabel("");
+	lblGif.setIcon(new ImageIcon(InscriptionPage.class.getResource("/ihm/media/SuccessVideo.gif")));
+	lblGif.setHorizontalAlignment(SwingConstants.CENTER);
+	lblGif.setBounds(0, 0, 1098, 612);
+	SuccessPanel.add(lblGif);
+	SuccessPanel.setVisible(false);
 
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
 	if (e.getSource() == btnRetour) {
+	    //retour page login
 	    MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 	    mp.setUndecorated(true);
 	    mp.setVisible(true);
 	    dispose();
+
 	}
 
 	if (e.getSource() == btnCreerCompte) {
+	    // check si les champs sont bon
 	    boolean bon = false;
 	    System.out.println(!this.txtAdresse.getText().equals(""));
 	    if (DaoDriveExpress.validate(this.txtMail.getText())) {
@@ -272,17 +299,29 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	    }
 
 	    if (bon) {
+		//Appel fonction d'inscription de la classe DaoDriveExpress avec parametre connection et User
 		DaoDriveExpress.inscriptionUser(connect,
 			new User(DaoDriveExpress.getLastIDUser(connect) + 1, this.txtNom.getText(),
 				this.txtPrenom.getText(), this.txtAdresse.getText(), this.txtVille.getText(),
 				this.txtCP.getText(), this.txtTel.getText(), this.txtMail.getText(),
 				this.txtPassword.getText()));
 
-		//Temporaire
-		MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
-		mp.setUndecorated(true);
-		mp.setVisible(true);
-		dispose();
+		// Timer pour jouer le gif 1 fois (6.306s) puis retour a la page de login
+		Timer chrono = new Timer();
+		rightSide.setVisible(false);
+		leftSide.setVisible(false);
+		SuccessPanel.setVisible(true);
+		chrono.schedule(new TimerTask() {
+
+		    @Override
+		    public void run() {
+			lblGif.setVisible(false);
+			MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
+			mp.setUndecorated(true);
+			mp.setVisible(true);
+			dispose();
+		    }
+		}, 6306);
 	    }
 	}
     }
@@ -299,12 +338,14 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 
     @Override
     public void mousePressed(MouseEvent e) {
+	// get la position de la souris
 	if (e.getSource() == topBar) {
 	    mouseX = e.getXOnScreen();
 	    mouseY = e.getYOnScreen();
 	}
 
 	if (e.getSource() == lblExitBtn) {
+	    //ferme la connection a la bdd puis check si elle est bien fermé
 	    if (connect != null) {
 		try {
 		    connect.close();
@@ -330,6 +371,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 
     @Override
     public void mouseDragged(MouseEvent e) {
+	//get les coordonnées de la souris (qui bouge) puis lui soustrait la position où la souris à cliqué et bouge la fenetre en fonction de ces infos
 	if (e.getSource() == topBar) {
 	    int coorX = e.getXOnScreen();
 	    int coorY = e.getYOnScreen();
