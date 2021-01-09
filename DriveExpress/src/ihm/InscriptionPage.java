@@ -237,7 +237,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
     @Override
     public void mouseClicked(MouseEvent e) {
 	if (e.getSource() == btnRetour) {
-	    //retour page login
+	    // retour page login
 	    MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 	    mp.setUndecorated(true);
 	    mp.setVisible(true);
@@ -248,7 +248,6 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	if (e.getSource() == btnCreerCompte) {
 	    // check si les champs sont bon
 	    boolean bon = false;
-	    System.out.println(!this.txtAdresse.getText().equals(""));
 	    if (DaoDriveExpress.validate(this.txtMail.getText())) {
 		this.txtMail.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
 		bon = true;
@@ -256,50 +255,17 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 		this.txtMail.setBorder(new LineBorder(Color.RED, 2));
 	    }
 
-	    if (this.txtTel.getText().length() == 10 && this.txtTel.getText().chars().allMatch(Character::isDigit)) {
-		bon = true;
-		this.txtTel.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-	    } else {
-		this.txtTel.setBorder(new LineBorder(Color.RED, 2));
-	    }
-
-	    if (!this.txtAdresse.getText().equals("")) {
-		bon = true;
-		this.txtAdresse.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-	    } else {
-		this.txtAdresse.setBorder(new LineBorder(Color.RED, 2));
-	    }
-
-	    if (!this.txtPrenom.getText().equals("")) {
-		bon = true;
-		this.txtPrenom.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-	    } else {
-		this.txtPrenom.setBorder(new LineBorder(Color.RED, 2));
-	    }
-
-	    if (!this.txtNom.getText().equals("")) {
-		bon = true;
-		this.txtNom.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-	    } else {
-		this.txtNom.setBorder(new LineBorder(Color.RED, 2));
-	    }
-
-	    if (!this.txtCP.getText().equals("") && this.txtCP.getText().chars().allMatch(Character::isDigit)) {
-		bon = true;
-		this.txtCP.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-	    } else {
-		this.txtCP.setBorder(new LineBorder(Color.RED, 2));
-	    }
-
-	    if (!this.txtVille.getText().equals("")) {
-		bon = true;
-		this.txtVille.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-	    } else {
-		this.txtVille.setBorder(new LineBorder(Color.RED, 2));
-	    }
+	    bon = this.checkJTextFieldString(this.txtCP, true, 5);
+	    bon = this.checkJTextFieldString(this.txtTel, true, 10);
+	    bon = this.checkJTextFieldString(this.txtVille);
+	    bon = this.checkJTextFieldString(this.txtNom);
+	    bon = this.checkJTextFieldString(this.txtPrenom);
+	    bon = this.checkJTextFieldString(this.txtAdresse);
+	    bon = this.checkJTextFieldString(this.txtNom);
 
 	    if (bon) {
-		//Appel fonction d'inscription de la classe DaoDriveExpress avec parametre connection et User
+		// Appel fonction d'inscription de la classe DaoDriveExpress avec parametre
+		// connection et User
 		DaoDriveExpress.inscriptionUser(connect,
 			new User(DaoDriveExpress.getLastIDUser(connect) + 1, this.txtNom.getText(),
 				this.txtPrenom.getText(), this.txtAdresse.getText(), this.txtVille.getText(),
@@ -345,7 +311,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	}
 
 	if (e.getSource() == lblExitBtn) {
-	    //ferme la connection a la bdd puis check si elle est bien fermé
+	    // ferme la connection a la bdd puis check si elle est bien fermé
 	    if (connect != null) {
 		try {
 		    connect.close();
@@ -371,7 +337,8 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 
     @Override
     public void mouseDragged(MouseEvent e) {
-	//get les coordonnées de la souris (qui bouge) puis lui soustrait la position où la souris à cliqué et bouge la fenetre en fonction de ces infos
+	// get les coordonnées de la souris (qui bouge) puis lui soustrait la position
+	// où la souris à cliqué et bouge la fenetre en fonction de ces infos
 	if (e.getSource() == topBar) {
 	    int coorX = e.getXOnScreen();
 	    int coorY = e.getYOnScreen();
@@ -384,4 +351,33 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
     @Override
     public void mouseMoved(MouseEvent e) {
     }
+
+    //Check si le texte du JTextField est vide renvoie un boolean
+    public boolean checkJTextFieldString(JTextField jtf) {
+	boolean res = false;
+
+	if (!jtf.getText().equals("")) {
+	    res = true;
+	    jtf.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+	} else
+
+	{
+	    jtf.setBorder(new LineBorder(Color.RED, 2));
+	}
+
+	return res;
+    }
+
+    //Surchage de checkJTextFieldString avec un check si le text du JTextField est un int et si il a le nombre de caractère voulu
+    public boolean checkJTextFieldString(JTextField jtf, boolean isInt, int nbChar) {
+	boolean res = this.checkJTextFieldString(jtf);
+	if (res && jtf.getText().length() == nbChar && jtf.getText().chars().allMatch(Character::isDigit)) {
+	    jtf.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+	} else {
+	    res = false;
+	    jtf.setBorder(new LineBorder(Color.RED, 2));
+	}
+	return res;
+    }
+
 }
