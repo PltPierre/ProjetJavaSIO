@@ -261,7 +261,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	    bon = this.checkJTextFieldString(this.txtNom) && bon;
 	    bon = this.checkJTextFieldString(this.txtPrenom) && bon;
 	    bon = this.checkJTextFieldString(this.txtAdresse) && bon;
-	    bon = this.checkJTextFieldString(this.txtNom) && bon;
+	    bon  = this.checkJTextFieldString(this.txtNom) && bon;
 
 	    if (bon) {
 		// Appel fonction d'inscription de la classe DaoDriveExpress avec parametre
