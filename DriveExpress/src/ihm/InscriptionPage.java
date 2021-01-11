@@ -255,13 +255,13 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 		this.txtMail.setBorder(new LineBorder(Color.RED, 2));
 	    }
 
-	    bon = this.checkJTextFieldString(this.txtCP, true, 5);
-	    bon = this.checkJTextFieldString(this.txtTel, true, 10);
-	    bon = this.checkJTextFieldString(this.txtVille);
-	    bon = this.checkJTextFieldString(this.txtNom);
-	    bon = this.checkJTextFieldString(this.txtPrenom);
-	    bon = this.checkJTextFieldString(this.txtAdresse);
-	    bon = this.checkJTextFieldString(this.txtNom);
+	    bon = this.checkJTextFieldString(this.txtCP, true, 5) && bon;
+	    bon = this.checkJTextFieldString(this.txtTel, true, 10) && bon;
+	    bon = this.checkJTextFieldString(this.txtVille) && bon;
+	    bon = this.checkJTextFieldString(this.txtNom) && bon;
+	    bon = this.checkJTextFieldString(this.txtPrenom) && bon;
+	    bon = this.checkJTextFieldString(this.txtAdresse) && bon;
+	    bon = this.checkJTextFieldString(this.txtNom) && bon;
 
 	    if (bon) {
 		// Appel fonction d'inscription de la classe DaoDriveExpress avec parametre
@@ -282,6 +282,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 		    @Override
 		    public void run() {
 			lblGif.setVisible(false);
+			
 			MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 			mp.setUndecorated(true);
 			mp.setVisible(true);
