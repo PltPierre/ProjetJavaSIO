@@ -6,7 +6,7 @@ import ihm.*;
 public class Main {
 
 	public static void main(String[] args) {
-		MainPage mp = new MainPage(DaoDriveExpress.SQLConnection(), 0, 0);
+		LoginPage mp = new LoginPage(DaoDriveExpress.SQLConnection(), 0, 0);
 		mp.setUndecorated(true);
 		mp.setVisible(true);
 	}
