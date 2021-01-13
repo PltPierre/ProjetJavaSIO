@@ -238,7 +238,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
     public void mouseClicked(MouseEvent e) {
 	if (e.getSource() == btnRetour) {
 	    // retour page login
-	    MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
+	    LoginPage mp = new LoginPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 	    mp.setUndecorated(true);
 	    mp.setVisible(true);
 	    dispose();
@@ -247,23 +247,23 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 
 	if (e.getSource() == btnCreerCompte) {
 	    // check si les champs sont bon
-	    boolean bon = false;
+	    boolean inscriptionValide = false;
 	    if (DaoDriveExpress.validate(this.txtMail.getText())) {
 		this.txtMail.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-		bon = true;
+			inscriptionValide = true;
 	    } else {
 		this.txtMail.setBorder(new LineBorder(Color.RED, 2));
 	    }
 
-	    bon = this.checkJTextFieldString(this.txtCP, true, 5) && bon;
-	    bon = this.checkJTextFieldString(this.txtTel, true, 10) && bon;
-	    bon = this.checkJTextFieldString(this.txtVille) && bon;
-	    bon = this.checkJTextFieldString(this.txtNom) && bon;
-	    bon = this.checkJTextFieldString(this.txtPrenom) && bon;
-	    bon = this.checkJTextFieldString(this.txtAdresse) && bon;
-	    bon  = this.checkJTextFieldString(this.txtNom) && bon;
+	    inscriptionValide = this.checkJTextFieldString(this.txtCP, true, 5) && inscriptionValide;
+	    inscriptionValide = this.checkJTextFieldString(this.txtTel, true, 10) && inscriptionValide;
+	    inscriptionValide = this.checkJTextFieldString(this.txtVille) && inscriptionValide;
+	    inscriptionValide = this.checkJTextFieldString(this.txtNom) && inscriptionValide;
+	    inscriptionValide = this.checkJTextFieldString(this.txtPrenom) && inscriptionValide;
+	    inscriptionValide = this.checkJTextFieldString(this.txtAdresse) && inscriptionValide;
+	    inscriptionValide = this.checkJTextFieldString(this.txtNom) && inscriptionValide;
 
-	    if (bon) {
+	    if (inscriptionValide) {
 		// Appel fonction d'inscription de la classe DaoDriveExpress avec parametre
 		// connection et User
 		DaoDriveExpress.inscriptionUser(connect,
@@ -283,7 +283,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 		    public void run() {
 			lblGif.setVisible(false);
 			
-			MainPage mp = new MainPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
+			LoginPage mp = new LoginPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 			mp.setUndecorated(true);
 			mp.setVisible(true);
 			dispose();
