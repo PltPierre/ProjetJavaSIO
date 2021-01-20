@@ -25,7 +25,13 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 	private Connection connect;
     private int mouseX;
     private int mouseY;
+    private JPanel Onglet1;
+    private JPanel ongletMenu;
     private JPanel panel;
+    private JPanel panel_1;
+    private JPanel panel_2;
+    private JPanel panel_3;
+    private JPanel panel_4;
 
 	public MainPage(Connection connection, int posX, int posY) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,6 +47,7 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 		}
 
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.BLACK);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
@@ -63,9 +70,37 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 		lblExitBtn.setBounds(1018, 0, 68, 27);
 		topBar.add(lblExitBtn);
 		
+		Onglet1 = new JPanel();
+		Onglet1.setBackground(Color.WHITE);
+		Onglet1.setBounds(182, 27, 904, 561);
+		contentPane.add(Onglet1);
+		Onglet1.setLayout(null);
+		
+		ongletMenu = new JPanel();
+		ongletMenu.setBackground(Color.WHITE);
+		ongletMenu.setBounds(0, 27, 180, 561);
+		contentPane.add(ongletMenu);
+		ongletMenu.setLayout(null);
+		
 		panel = new JPanel();
-		panel.setBounds(0, 30, 1064, 558);
-		contentPane.add(panel);
+		panel.setBounds(0, 0, 180, 80);
+		ongletMenu.add(panel);
+		
+		panel_1 = new JPanel();
+		panel_1.setBounds(0, 82, 180, 80);
+		ongletMenu.add(panel_1);
+		
+		panel_2 = new JPanel();
+		panel_2.setBounds(0, 164, 180, 80);
+		ongletMenu.add(panel_2);
+		
+		panel_3 = new JPanel();
+		panel_3.setBounds(0, 246, 180, 80);
+		ongletMenu.add(panel_3);
+		
+		panel_4 = new JPanel();
+		panel_4.setBounds(0, 328, 180, 80);
+		ongletMenu.add(panel_4);
 	}
 
 	@Override
