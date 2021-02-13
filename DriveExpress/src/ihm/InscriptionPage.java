@@ -250,7 +250,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	    boolean inscriptionValide = false;
 	    if (DaoDriveExpress.validate(this.txtMail.getText())) {
 		this.txtMail.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
-			inscriptionValide = true;
+		inscriptionValide = true;
 	    } else {
 		this.txtMail.setBorder(new LineBorder(Color.RED, 2));
 	    }
@@ -282,7 +282,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 		    @Override
 		    public void run() {
 			lblGif.setVisible(false);
-			
+
 			LoginPage mp = new LoginPage(connect, getLocationOnScreen().x, getLocationOnScreen().y);
 			mp.setUndecorated(true);
 			mp.setVisible(true);
@@ -353,7 +353,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
     public void mouseMoved(MouseEvent e) {
     }
 
-    //Check si le texte du JTextField est vide renvoie un boolean
+    // Check si le texte du JTextField est vide renvoie un boolean
     public boolean checkJTextFieldString(JTextField jtf) {
 	boolean res = false;
 
@@ -369,7 +369,8 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	return res;
     }
 
-    //Surchage de checkJTextFieldString avec un check si le text du JTextField est un int et si il a le nombre de caractère voulu
+    // Surchage de checkJTextFieldString avec un check si le text du JTextField est
+    // un int et si il a le nombre de caractère voulu
     public boolean checkJTextFieldString(JTextField jtf, boolean isInt, int nbChar) {
 	boolean res = this.checkJTextFieldString(jtf);
 	if (res && jtf.getText().length() == nbChar && jtf.getText().chars().allMatch(Character::isDigit)) {

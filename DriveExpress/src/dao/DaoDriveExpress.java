@@ -9,132 +9,131 @@ import java.util.regex.*;
 import metier.User;
 
 public class DaoDriveExpress {
-	private static final TreeMap<String, String> properties = DaoDriveExpress.GetDatabaseProperties();
+    private static final TreeMap<String, String> properties = DaoDriveExpress.GetDatabaseProperties();
 
-	public static Connection SQLConnection() {
+    public static Connection SQLConnection() {
 
-		Connection connect = null;
+	Connection connect = null;
 
-		try {
-			Class.forName(properties.get("driver"));
-		} catch (ClassNotFoundException e1) {
-			System.out.println("pb driver");
-			e1.printStackTrace();
-		}
-
-		try {
-			connect = DriverManager.getConnection(properties.get("url"), properties.get("login"),
-					properties.get("password"));
-		} catch (SQLException e) {
-			System.out.println("pb lors de la connection a la base de données");
-			e.printStackTrace();
-		}
-
-		try {
-			Statement stLienBD = connect.createStatement();
-			String req = "USE bch5pl5adcyod7rdbeyl";
-			ResultSet resultat = stLienBD.executeQuery(req);
-			while (resultat.next()) {
-				System.out.println(resultat.getString(1));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return connect;
+	try {
+	    Class.forName(properties.get("driver"));
+	} catch (ClassNotFoundException e1) {
+	    System.out.println("pb driver");
+	    e1.printStackTrace();
 	}
 
-	private static TreeMap<String, String> GetDatabaseProperties() {
-		TreeMap<String, String> properties = new TreeMap<String, String>();
-
-		Properties props = new Properties();
-		try {
-			FileInputStream fis = new FileInputStream("./model/conf.properties");
-			props.load(fis);
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-
-		properties.put("driver", props.getProperty("jdbc.driver"));
-		properties.put("url", props.getProperty("jdbc.url"));
-		properties.put("login", props.getProperty("jdbc.login"));
-		properties.put("password", props.getProperty("jdbc.password"));
-
-		return properties;
+	try {
+	    connect = DriverManager.getConnection(properties.get("url"), properties.get("login"),
+		    properties.get("password"));
+	} catch (SQLException e) {
+	    System.out.println("pb lors de la connection a la base de données");
+	    e.printStackTrace();
 	}
 
-	public static int Connect(String mail, String mdp, Connection connect) {
-		int res;
-		res = 0;
-		try {
-			Statement stLienBD = connect.createStatement();
-			String req = "SELECT PRENOMUSER, NOMUSER FROM USERS WHERE MAILUSER = '" + mail + "' AND MDPUSER = '" + mdp
-					+ "';";
-			ResultSet resultat = stLienBD.executeQuery(req);
-			while (resultat.next()) {
-				res++;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return res;
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "USE bch5pl5adcyod7rdbeyl";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		System.out.println(resultat.getString(1));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	}
 
-	public static int ConnectEmployee(String mail, String mdp, Connection connect) {
-		int res;
-		res = 0;
-		try {
-			Statement stLienBD = connect.createStatement();
-			String req = "SELECT PRENOME, NOME FROM EMPLOYE WHERE MAILE = '" + mail + "' AND MDPE = '" + mdp
-					+ "';";
-			ResultSet resultat = stLienBD.executeQuery(req);
-			while (resultat.next()) {
-				res++;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return res;
-	}
-	
-	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
-			Pattern.CASE_INSENSITIVE);
+	return connect;
+    }
 
-	public static boolean validate(String emailStr) {
-		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-		return matcher.find();
+    private static TreeMap<String, String> GetDatabaseProperties() {
+	TreeMap<String, String> properties = new TreeMap<String, String>();
+
+	Properties props = new Properties();
+	try {
+	    FileInputStream fis = new FileInputStream("./model/conf.properties");
+	    props.load(fis);
+	} catch (Exception e) {
+	    e.getStackTrace();
 	}
 
-	public static int getLastIDUser(Connection connect) {
-		int res = 0;
+	properties.put("driver", props.getProperty("jdbc.driver"));
+	properties.put("url", props.getProperty("jdbc.url"));
+	properties.put("login", props.getProperty("jdbc.login"));
+	properties.put("password", props.getProperty("jdbc.password"));
 
-		try {
-			Statement stLienBD = connect.createStatement();
-			String req = "SELECT IDUSER FROM USERS";
-			ResultSet resultat = stLienBD.executeQuery(req);
-			while (resultat.next()) {
-				res = resultat.getInt(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	return properties;
+    }
 
-		return res;
+    public static int Connect(String mail, String mdp, Connection connect) {
+	int res;
+	res = 0;
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT PRENOMUSER, NOMUSER FROM USERS WHERE MAILUSER = '" + mail + "' AND MDPUSER = '" + mdp
+		    + "';";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		res++;
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	}
 
-	public static void inscriptionUser(Connection connect, User user) {
+	return res;
+    }
 
-		try {
-			Statement stLienBD = connect.createStatement();
-			String req = "INSERT INTO USERS VALUES(" + user.getIDUser() + ", '" + user.getNomUser() + "','"
-					+ user.getPrenomUser() + "','" + user.getUserMail() + "','" + user.getPasswordUser() + "','"
-					+ user.getNumTel() + "','" + user.getAdresse() + "','" + user.getCP() + "','" + user.getVille()
-					+ "')";
-			stLienBD.executeUpdate(req);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+    public static int ConnectEmployee(String mail, String mdp, Connection connect) {
+	int res;
+	res = 0;
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT PRENOME, NOME FROM EMPLOYE WHERE MAILE = '" + mail + "' AND MDPE = '" + mdp + "';";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		res++;
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	}
+
+	return res;
+    }
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+	    Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+	Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+	return matcher.find();
+    }
+
+    public static int getLastIDUser(Connection connect) {
+	int res = 0;
+
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT IDUSER FROM USERS";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		res = resultat.getInt(1);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+
+	return res;
+    }
+
+    public static void inscriptionUser(Connection connect, User user) {
+
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "INSERT INTO USERS VALUES(" + user.getIDUser() + ", '" + user.getNomUser() + "','"
+		    + user.getPrenomUser() + "','" + user.getUserMail() + "','" + user.getPasswordUser() + "','"
+		    + user.getNumTel() + "','" + user.getAdresse() + "','" + user.getCP() + "','" + user.getVille()
+		    + "')";
+	    stLienBD.executeUpdate(req);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
 }

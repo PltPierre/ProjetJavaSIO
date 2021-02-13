@@ -11,7 +11,8 @@ public class User {
     private String userMail;
     private String passwordUser;
 
-    public User(int iDUser, String nomUser, String prenomUser, String adresse, String ville, String cP, String numTel, String userMail, String passwordUser) {
+    public User(int iDUser, String nomUser, String prenomUser, String adresse, String ville, String cP, String numTel,
+	    String userMail, String passwordUser) {
 	this.idUser = iDUser;
 	this.nomUser = nomUser;
 	this.prenomUser = prenomUser;
@@ -56,9 +57,7 @@ public class User {
     }
 
     public String getPasswordUser() {
-        return passwordUser;
+	return passwordUser;
     }
-    
-    
 
 }
