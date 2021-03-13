@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class MainPage extends JFrame implements MouseListener, MouseMotionListener {
+public class OptionPage extends JFrame implements MouseListener, MouseMotionListener {
 
     private static final long serialVersionUID = -8475963155634927953L;
     private JPanel contentPane;
@@ -39,7 +39,7 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
     private JLabel lblLogoDeconnexion;
     private JLabel lblAcceuil;
 
-    public MainPage(Connection connection, int posX, int posY) {
+    public OptionPage(Connection connection, int posX, int posY) {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	if (posX != 0 && posY != 0) {
@@ -90,7 +90,6 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 
 	pnlAcceuil = new JPanel();
 	pnlAcceuil.setBounds(0, 143, 180, 80);
-	pnlAcceuil.setBackground(new Color(200, 200, 200));
 	ongletMenu.add(pnlAcceuil);
 	pnlAcceuil.addMouseListener(this);
 	pnlAcceuil.setLayout(null);
@@ -99,7 +98,7 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 	lblAcceuil.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
 	lblAcceuil.setBounds(66, 0, 114, 80);
-	lblAcceuil.setBackground(new Color(200, 200, 200));
+	pnlAcceuil.addMouseListener(this);
 	pnlAcceuil.add(lblAcceuil);
 
 	pnlProduit = new JPanel();
@@ -139,12 +138,14 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 
 	pnlSettings = new JPanel();
 	pnlSettings.setBounds(0, 504, 180, 43);
+	pnlSettings.setBackground(new Color(200, 200, 200));
 	ongletMenu.add(pnlSettings);
 	pnlSettings.setLayout(null);
 
 	lblOption = new JLabel("options");
 	lblOption.setHorizontalAlignment(SwingConstants.CENTER);
 	lblOption.setFont(new Font("Tahoma", Font.PLAIN, 20));
+	lblOption.setBackground(new Color(200, 200, 200));
 	lblOption.setBounds(49, 0, 131, 43);
 	lblOption.addMouseListener(this);
 	pnlSettings.add(lblOption);
@@ -153,6 +154,7 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 	lblLogoOption.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogoOption.setBounds(0, 0, 46, 43);
 	lblLogoOption.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/SettingsLogo.png")));
+	lblLogoOption.setBackground(new Color(200, 200, 200));
 	lblLogoOption.addMouseListener(this);
 	pnlSettings.add(lblLogoOption);
     }
@@ -181,14 +183,15 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
     @Override
     public void mouseClicked(MouseEvent e) {
 	// TODO Stub de la méthode généré automatiquement
+	// click pour le panel acceuil
+	if ((JPanel) e.getComponent() == this.pnlAcceuil || (JLabel) e.getComponent() == this.lblAcceuil) {
+	    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y);
+	    mp.setUndecorated(true);
+	    mp.setVisible(true);
+	    dispose();
+	}
 	try {
-	    // click pour le panel option
-	    if ((JLabel) e.getComponent() == this.lblOption || (JLabel) e.getComponent() == this.lblLogoOption) {
-		OptionPage op = new OptionPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y);
-		op.setUndecorated(true);
-		op.setVisible(true);
-		dispose();
-	    }
+
 	    // click pour le panel deconnexion
 	    if ((JLabel) e.getComponent() == this.lblDeconnexion
 		    || (JLabel) e.getComponent() == this.lblLogoDeconnexion) {
@@ -197,15 +200,8 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 		lp.setVisible(true);
 		dispose();
 	    }
-	    // click pour le panel acceuil
-	    if ((JPanel) e.getComponent() == this.pnlAcceuil) {
-		MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y);
-		mp.setUndecorated(true);
-		mp.setVisible(true);
-		dispose();
-	    }
 	} catch (Exception e2) {
-
+	    // TODO: handle exception
 	}
 
     }
@@ -257,14 +253,10 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 		this.lblDeconnexion.setBackground(new Color(220, 220, 220));
 		this.lblLogoDeconnexion.setBackground(new Color(220, 220, 220));
 	    }
-	    // Hover pour le panel option
-	    if ((JLabel) e.getComponent() == this.lblOption || (JLabel) e.getComponent() == this.lblLogoOption) {
-		this.pnlSettings.setBackground(new Color(220, 220, 220));
-		this.lblOption.setBackground(new Color(220, 220, 220));
-		this.lblLogoOption.setBackground(new Color(220, 220, 220));
-	    }
+
 	    // hover pour le panel acceuil
-	    if ((JPanel) e.getComponent() == this.pnlAcceuil) {
+	    if ((JLabel) e.getComponent() == this.lblAcceuil) {
+		this.lblAcceuil.setBackground(new Color(220, 220, 220));
 		this.pnlAcceuil.setBackground(new Color(220, 220, 220));
 	    }
 	} catch (Exception e2) {
@@ -284,14 +276,10 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 		this.lblDeconnexion.setBackground(new Color(240, 240, 240));
 		this.lblLogoDeconnexion.setBackground(new Color(240, 240, 240));
 	    }
-	    // Hover pour le panel option
-	    if ((JLabel) e.getComponent() == this.lblOption || (JLabel) e.getComponent() == this.lblLogoOption) {
-		this.pnlSettings.setBackground(new Color(240, 240, 240));
-		this.lblOption.setBackground(new Color(240, 240, 240));
-		this.lblLogoOption.setBackground(new Color(240, 240, 240));
-	    }
-	    // hover pour le panel acceuil
-	    if ((JPanel) e.getComponent() == this.pnlAcceuil) {
+
+	 // hover pour le panel acceuil
+	    if ((JLabel) e.getComponent() == this.lblAcceuil) {
+		this.lblAcceuil.setBackground(new Color(240, 240, 240));
 		this.pnlAcceuil.setBackground(new Color(240, 240, 240));
 	    }
 	} catch (Exception e2) {
