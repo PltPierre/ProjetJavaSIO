@@ -9,6 +9,7 @@ import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,17 +27,22 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
     private int mouseY;
     private JPanel Onglet1;
     private JPanel ongletMenu;
-    private JPanel panel;
-    private JPanel panel_1;
-    private JPanel panel_2;
-    private JPanel panel_3;
-    private JPanel panel_4;
+    private JPanel pnlAcceuil;
+    private JPanel pnlProduit;
+    private JPanel pnlPanier;
+    private JPanel pnlLogout;
+    private JLabel lblLogo;
+    private JPanel pnlSettings;
+    private JLabel lblOption;
+    private JLabel lblDeconnexion;
+    private JLabel lblLogoOption;
+    private JLabel lblLogoDeconnexion;
 
     public MainPage(Connection connection, int posX, int posY) {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	if (posX != 0 && posY != 0) {
-	    setBounds(posX, posY, 1080, 624);
+	    setBounds(posX, posY, 1080, 630);
 	} else {
 	    setBounds(100, 100, 1080, 624);
 	}
@@ -71,35 +77,74 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 
 	Onglet1 = new JPanel();
 	Onglet1.setBackground(Color.WHITE);
-	Onglet1.setBounds(182, 27, 904, 561);
+	Onglet1.setBounds(182, 27, 904, 612);
 	contentPane.add(Onglet1);
 	Onglet1.setLayout(null);
 
 	ongletMenu = new JPanel();
 	ongletMenu.setBackground(Color.WHITE);
-	ongletMenu.setBounds(0, 27, 180, 561);
+	ongletMenu.setBounds(0, 27, 180, 612);
 	contentPane.add(ongletMenu);
 	ongletMenu.setLayout(null);
 
-	panel = new JPanel();
-	panel.setBounds(0, 0, 180, 80);
-	ongletMenu.add(panel);
+	pnlAcceuil = new JPanel();
+	pnlAcceuil.setBounds(0, 143, 180, 80);
+	ongletMenu.add(pnlAcceuil);
+	pnlAcceuil.setLayout(null);
 
-	panel_1 = new JPanel();
-	panel_1.setBounds(0, 82, 180, 80);
-	ongletMenu.add(panel_1);
+	pnlProduit = new JPanel();
+	pnlProduit.setBounds(0, 225, 180, 80);
+	ongletMenu.add(pnlProduit);
+	pnlProduit.setLayout(null);
 
-	panel_2 = new JPanel();
-	panel_2.setBounds(0, 164, 180, 80);
-	ongletMenu.add(panel_2);
+	pnlPanier = new JPanel();
+	pnlPanier.setBounds(0, 307, 180, 80);
+	ongletMenu.add(pnlPanier);
+	pnlPanier.setLayout(null);
 
-	panel_3 = new JPanel();
-	panel_3.setBounds(0, 246, 180, 80);
-	ongletMenu.add(panel_3);
+	pnlLogout = new JPanel();
+	pnlLogout.setBounds(0, 558, 180, 43);
+	ongletMenu.add(pnlLogout);
+	pnlLogout.setLayout(null);
 
-	panel_4 = new JPanel();
-	panel_4.setBounds(0, 328, 180, 80);
-	ongletMenu.add(panel_4);
+	lblDeconnexion = new JLabel("d\u00E9connexion");
+	lblDeconnexion.setBounds(51, 0, 129, 43);
+	lblDeconnexion.setHorizontalAlignment(SwingConstants.CENTER);
+	lblDeconnexion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+	lblDeconnexion.addMouseListener(this);
+	pnlLogout.add(lblDeconnexion);
+
+	lblLogoDeconnexion = new JLabel("");
+	lblLogoDeconnexion.setHorizontalAlignment(SwingConstants.CENTER);
+	lblLogoDeconnexion.setBounds(0, 0, 46, 43);
+	lblLogoDeconnexion.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoutLogo.png")));
+	lblLogoDeconnexion.addMouseListener(this);
+	pnlLogout.add(lblLogoDeconnexion);
+
+	lblLogo = new JLabel("");
+	lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
+	lblLogo.setBounds(0, 0, 180, 117);
+	lblLogo.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/DriveExpressLogo.png")));
+	ongletMenu.add(lblLogo);
+
+	pnlSettings = new JPanel();
+	pnlSettings.setBounds(0, 504, 180, 43);
+	ongletMenu.add(pnlSettings);
+	pnlSettings.setLayout(null);
+
+	lblOption = new JLabel("options");
+	lblOption.setHorizontalAlignment(SwingConstants.CENTER);
+	lblOption.setFont(new Font("Tahoma", Font.PLAIN, 20));
+	lblOption.setBounds(49, 0, 131, 43);
+	lblOption.addMouseListener(this);
+	pnlSettings.add(lblOption);
+
+	lblLogoOption = new JLabel("");
+	lblLogoOption.setHorizontalAlignment(SwingConstants.CENTER);
+	lblLogoOption.setBounds(0, 0, 46, 43);
+	lblLogoOption.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/SettingsLogo.png")));
+	lblLogoOption.addMouseListener(this);
+	pnlSettings.add(lblLogoOption);
     }
 
     @Override
@@ -168,12 +213,44 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
     @Override
     public void mouseEntered(MouseEvent e) {
 	// TODO Stub de la méthode généré automatiquement
+	try {
+	    // Hover pour le panel deconnexion
+	    if ((JLabel) e.getComponent() == this.lblDeconnexion || (JLabel) e.getComponent() == this.lblLogoDeconnexion) {
+		this.pnlLogout.setBackground(new Color(220, 220, 220));
+		this.lblDeconnexion.setBackground(new Color(220, 220, 220));
+		this.lblLogoDeconnexion.setBackground(new Color(220, 220, 220));
+	    }
+	    // Hover pour le panel option
+	    if ((JLabel) e.getComponent() == this.lblOption || (JLabel) e.getComponent() == this.lblLogoOption) {
+		this.pnlSettings.setBackground(new Color(220, 220, 220));
+		this.lblOption.setBackground(new Color(220, 220, 220));
+		this.lblLogoOption.setBackground(new Color(220, 220, 220));
+	    }
+	} catch (Exception e2) {
+
+	}
 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
 	// TODO Stub de la méthode généré automatiquement
+	try {
+	    // Hover pour le panel deconnexion
+	    if ((JLabel) e.getComponent() == this.lblDeconnexion || (JLabel) e.getComponent() == this.lblLogoDeconnexion) {
+		this.pnlLogout.setBackground(new Color(240, 240, 240));
+		this.lblDeconnexion.setBackground(new Color(240, 240, 240));
+		this.lblLogoDeconnexion.setBackground(new Color(240, 240, 240));
+	    }
+	    // Hover pour le panel option
+	    if ((JLabel) e.getComponent() == this.lblOption || (JLabel) e.getComponent() == this.lblLogoOption) {
+		this.pnlSettings.setBackground(new Color(240, 240, 240));
+		this.lblOption.setBackground(new Color(240, 240, 240));
+		this.lblLogoOption.setBackground(new Color(240, 240, 240));
+	    }
+	} catch (Exception e2) {
+
+	}
 
     }
 }

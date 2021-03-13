@@ -190,6 +190,7 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y);
 		    mp.setUndecorated(true);
 		    mp.setVisible(true);
+		    dispose();
 		} else {
 		    if (DaoDriveExpress.ConnectEmployee(txtMail.getText(), txtMDP.getText(), connect) != 0) {
 			this.isConnected = true;
@@ -259,6 +260,10 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 		if (DaoDriveExpress.Connect(txtMail.getText(), txtMDP.getText(), connect) != 0) {
 		    this.isConnected = true;
 		    lblDbConnection.setText("olémarche");
+		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y);
+		    mp.setUndecorated(true);
+		    mp.setVisible(true);
+		    dispose();
 		} else {
 		    if (DaoDriveExpress.ConnectEmployee(txtMail.getText(), txtMDP.getText(), connect) != 0) {
 			this.isConnected = true;
