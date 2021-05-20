@@ -77,7 +77,7 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	contentPane.add(topBar);
 	topBar.setLayout(null);
 	
-	lblNomPage = new JLabel("DriveExpress - Boutique");
+	lblNomPage = new JLabel("DriveExpress - Panier");
 	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
 	lblNomPage.setBounds(10, 0, 230, 27);
 	topBar.add(lblNomPage);
