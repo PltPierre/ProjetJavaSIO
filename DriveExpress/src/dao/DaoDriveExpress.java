@@ -122,6 +122,39 @@ public class DaoDriveExpress {
 
 	return res;
     }
+    
+    public static User getUser(String mail, String mdp, Connection connect) {
+	User u;
+	u = null;
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT * FROM USERS WHERE MAILUSER = '" + mail + "' AND MDPUSER = '" + mdp + "';";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		u = new User(resultat.getInt(1), resultat.getString(2), resultat.getString(3), resultat.getString(7), resultat.getString(9), resultat.getString(8), resultat.getString(6), resultat.getString(4), resultat.getString(5));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return u;
+    }
+    
+    public static String getFullName(Connection connect, int idUser) {
+	String res = "";
+
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT NOMUSER, PRENOMUSER FROM USERS WHERE IDUSER="+ idUser +";";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		res = resultat.getString(2) + " " + resultat.getString(1);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+
+	return res;
+    }
 
     public static void inscriptionUser(Connection connect, User user) {
 
@@ -136,4 +169,5 @@ public class DaoDriveExpress {
 	    e.printStackTrace();
 	}
     }
+
 }

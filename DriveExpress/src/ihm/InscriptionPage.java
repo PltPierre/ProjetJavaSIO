@@ -56,6 +56,7 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
     private JTextField txtPassword;
     private JPanel SuccessPanel;
     private JLabel lblGif;
+    private JLabel lblNomPage;
 
     public InscriptionPage(Connection connection, int posX, int posY) {
 	this.connect = connection;
@@ -92,6 +93,12 @@ public class InscriptionPage extends JFrame implements MouseListener, MouseMotio
 	topBar.setBounds(0, 0, 1086, 27);
 	contentPane.add(topBar);
 	topBar.setLayout(null);
+	
+	lblNomPage = new JLabel("DriveExpress - Inscription");
+	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
+	lblNomPage.setBounds(10, 0, 230, 27);
+	topBar.add(lblNomPage);
+
 
 	lblExitBtn = new JLabel("X");
 	lblExitBtn.setToolTipText("Fermer");

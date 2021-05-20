@@ -36,6 +36,7 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
     private JTextField txtMail;
     private JTextField txtMDP;
     private JButton btnCreerUnCompte;
+    private JLabel lblNomPage;
 
     private boolean isConnected;
     private boolean isEmployee;
@@ -80,6 +81,12 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 	topBar.setBounds(0, 0, 1086, 27);
 	contentPane.add(topBar);
 	topBar.setLayout(null);
+	
+	lblNomPage = new JLabel("DriveExpress - Connection");
+	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
+	lblNomPage.setBounds(10, 0, 230, 27);
+	topBar.add(lblNomPage);
+
 
 	lblExitBtn = new JLabel("X");
 	lblExitBtn.setToolTipText("Fermer");
@@ -187,7 +194,7 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 		if (DaoDriveExpress.Connect(txtMail.getText(), txtMDP.getText(), connect) != 0) {
 		    this.isConnected = true;
 		    lblDbConnection.setText("olémarche");
-		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y);
+		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, DaoDriveExpress.getUser(txtMail.getText(), txtMDP.getText(), connect));
 		    mp.setUndecorated(true);
 		    mp.setVisible(true);
 		    dispose();
@@ -260,7 +267,7 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 		if (DaoDriveExpress.Connect(txtMail.getText(), txtMDP.getText(), connect) != 0) {
 		    this.isConnected = true;
 		    lblDbConnection.setText("olémarche");
-		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y);
+		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, DaoDriveExpress.getUser(txtMail.getText(), txtMDP.getText(), connect));
 		    mp.setUndecorated(true);
 		    mp.setVisible(true);
 		    dispose();
