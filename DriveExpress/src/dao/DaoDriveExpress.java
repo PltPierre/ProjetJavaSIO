@@ -329,4 +329,14 @@ public class DaoDriveExpress {
 		e.printStackTrace();
 	    }
     }
+    
+    public static void ajoutPaiement(Connection connect, Paiement p) {
+	try {
+		Statement stLienBD = connect.createStatement();
+		String req = "INSERT INTO PAIEMENT(MONTANT, DATEPAIEMENT) VALUES(" + p.getMontant() +", '"+ p.getDatePaiement() +"');";
+		stLienBD.executeUpdate(req);
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+    }
 }

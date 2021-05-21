@@ -7,7 +7,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import metier.Paiement;
 import metier.Produit;
 import metier.User;
 import javax.swing.JTable;
@@ -63,6 +66,8 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
     private JLabel lblPanierVide;
     private JLabel lblTotal;
     private JButton btnAcheter;
+    
+    private double total;
 
     public PanierPage(Connection connection, int posX, int posY, User user) {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,7 +155,7 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	table.setModel(
 		new DefaultTableModel(new Object[][] {}, new String[] { "Produit", "Quantité", "Prix Unitaire" }) {
 		    private static final long serialVersionUID = 1L;
-		    boolean[] columnEditables = new boolean[] { false, true, true };
+		    boolean[] columnEditables = new boolean[] { false, false, false };
 
 		    public boolean isCellEditable(int row, int column) {
 			return columnEditables[column];
@@ -285,11 +290,11 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	    HashMap<Produit, Integer> lePanier = DaoDriveExpress.getContenuPanier(connection, user);
 
 	    DefaultTableModel model = (DefaultTableModel) table.getModel();
-	    double total = 0;
+	    this.total = 0;
 
 	    for (Map.Entry<Produit, Integer> entry : lePanier.entrySet()) {
 		model.addRow(new Object[] { entry.getKey().getLibProduit(), entry.getValue(), entry.getKey().getPrixProduit() * entry.getKey().getPromotionProduit() });
-		total += (entry.getKey().getPrixProduit() * entry.getKey().getPromotionProduit())*entry.getValue();
+		this.total += (entry.getKey().getPrixProduit() * entry.getKey().getPromotionProduit())*entry.getValue();
 	    }
 	    
 	    lblTotal.setText(String.format("Total : %.2f €", total));
@@ -324,6 +329,9 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 
 	// btn Ajout Panier
 	if (e.getComponent() == this.btnAcheter) {
+	    Paiement paiement = new Paiement(1, this.total, new Date(Instant.now().toEpochMilli()));
+	    System.out.println(paiement.getDatePaiement());
+	    DaoDriveExpress.ajoutPaiement(connect, paiement);
 	    DaoDriveExpress.supprContenuPanierUser(connect, user);
 	    PanierPage pp = new PanierPage(connect, getLocationOnScreen().x, getLocationOnScreen().y, user);
 	    pp.setUndecorated(true);
