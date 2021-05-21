@@ -1,17 +1,14 @@
 package metier;
 
-import java.sql.*;
 
 public class Panier {
 
     private int idPanier;
     private User user;
-    private Date dateCreation;
 
-    public Panier(int idPanier, metier.User user, Date dateCreation) {
+    public Panier(int idPanier, metier.User user) {
 	this.idPanier = idPanier;
 	this.user = user;
-	this.dateCreation = dateCreation;
     }
 
     public int getIdPanier() {
@@ -20,10 +17,6 @@ public class Panier {
 
     public User getUser() {
 	return this.user;
-    }
-
-    public Date getDateCreation() {
-	return this.dateCreation;
     }
 
 }

@@ -9,12 +9,18 @@ public class Produit {
     private double PrixProduit;
     private double promotionProduit;
 
-    public Produit(int idProduit, TypeProduit leTypeProduit, String libProduit, String descProduit, double prixProduit) {
+    public Produit(int idProduit, TypeProduit leTypeProduit, String libProduit, String descProduit, double prixProduit, double promotionProduit) {
 	this.idProduit = idProduit;
 	this.leTypeProduit = leTypeProduit;
 	this.libProduit = libProduit;
 	this.descProduit = descProduit;
 	this.PrixProduit = prixProduit;
+	
+	if(promotionProduit == 0) {
+	    this.promotionProduit = 1;
+	}
+	
+	leTypeProduit.addProduit(this);
     }
 
     public double getPromotionProduit() {
@@ -44,5 +50,12 @@ public class Produit {
     public double getPrixProduit() {
 	return this.PrixProduit;
     }
+
+    @Override
+    public String toString() {
+	return libProduit;
+    }
+    
+    
 
 }

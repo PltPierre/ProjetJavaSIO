@@ -256,16 +256,16 @@ public class MainPage extends JFrame implements MouseListener, MouseMotionListen
 	    }
 	    // click pour le panel boutique
 	    if ((JLabel) e.getComponent() == this.lblBoutique || (JLabel) e.getComponent() == this.lblLogoBoutique) {
-		BoutiquePage op = new BoutiquePage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.user);
-		op.setUndecorated(true);
-		op.setVisible(true);
+		BoutiquePage bp = new BoutiquePage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.user);
+		bp.setUndecorated(true);
+		bp.setVisible(true);
 		dispose();
 	    }
 	    // click pour le panel Panier
 	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
-		PanierPage op = new PanierPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.user);
-		op.setUndecorated(true);
-		op.setVisible(true);
+		PanierPage pp = new PanierPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.user);
+		pp.setUndecorated(true);
+		pp.setVisible(true);
 		dispose();
 	    }
 	} catch (Exception e2) {

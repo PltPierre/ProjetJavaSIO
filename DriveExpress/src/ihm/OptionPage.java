@@ -144,7 +144,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	lblBoutique.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblBoutique.setHorizontalAlignment(SwingConstants.CENTER);
 	lblBoutique.setBounds(66, 0, 114, 80);
-	lblBoutique.setBackground(new Color(200, 200, 200));
+	lblBoutique.addMouseListener(this);
 	pnlBoutique.add(lblBoutique);
 
 	lblLogoBoutique = new JLabel("");
@@ -255,9 +255,10 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	    }
 	    // click pour le panel boutique
 	    if ((JLabel) e.getComponent() == this.lblBoutique || (JLabel) e.getComponent() == this.lblLogoBoutique) {
-		BoutiquePage op = new BoutiquePage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.user);
-		op.setUndecorated(true);
-		op.setVisible(true);
+		BoutiquePage bp = new BoutiquePage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
+			this.user);
+		bp.setUndecorated(true);
+		bp.setVisible(true);
 		dispose();
 	    }
 	    // click pour le panel Panier
@@ -326,7 +327,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 		this.lblLogoAcceuil.setBackground(new Color(220, 220, 220));
 		this.pnlAcceuil.setBackground(new Color(220, 220, 220));
 	    }
-	    // Hover pour le panel Boutique
+	    // Hover pour le panel boutique
 	    if ((JLabel) e.getComponent() == this.lblBoutique || (JLabel) e.getComponent() == this.lblLogoBoutique) {
 		this.pnlBoutique.setBackground(new Color(220, 220, 220));
 		this.lblBoutique.setBackground(new Color(220, 220, 220));
@@ -368,7 +369,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 		this.lblBoutique.setBackground(new Color(240, 240, 240));
 		this.lblLogoBoutique.setBackground(new Color(240, 240, 240));
 	    }
-	    // Hover pour le panel boutique
+	    // Hover pour le panel panier
 	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
 		this.pnlPanier.setBackground(new Color(240, 240, 240));
 		this.lblPanier.setBackground(new Color(240, 240, 240));

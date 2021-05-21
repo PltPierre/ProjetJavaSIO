@@ -8,15 +8,24 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import metier.Produit;
 import metier.User;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import dao.DaoDriveExpress;
 
 public class PanierPage extends JFrame implements MouseListener, MouseMotionListener {
 
@@ -48,6 +57,12 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
     private JLabel lblNomPage;
     private JLabel lblPanier;
     private JLabel lblLogoPanier;
+    private JPanel panel;
+    private JScrollPane scrollPane;
+    private JTable table;
+    private JLabel lblPanierVide;
+    private JLabel lblTotal;
+    private JButton btnAcheter;
 
     public PanierPage(Connection connection, int posX, int posY, User user) {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,12 +91,11 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	topBar.setBounds(0, 0, 1086, 27);
 	contentPane.add(topBar);
 	topBar.setLayout(null);
-	
+
 	lblNomPage = new JLabel("DriveExpress - Panier");
 	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
 	lblNomPage.setBounds(10, 0, 230, 27);
 	topBar.add(lblNomPage);
-
 
 	lblExitBtn = new JLabel("X");
 	lblExitBtn.setToolTipText("Fermer");
@@ -98,12 +112,57 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	Onglet1.setBounds(182, 27, 904, 612);
 	contentPane.add(Onglet1);
 	Onglet1.setLayout(null);
-	
+
+	btnAcheter = new JButton("Payer");
+	btnAcheter.setFont(new Font("Tahoma", Font.PLAIN, 20));
+	btnAcheter.setBounds(733, 535, 141, 55);
+	btnAcheter.setForeground(Color.BLACK);
+	btnAcheter.setBackground(Color.GREEN);
+	btnAcheter.setBorderPainted(false);
+	btnAcheter.addMouseListener(this);
+	btnAcheter.setFocusable(false);
+	Onglet1.add(btnAcheter);
+
 	lblNom = new JLabel("Bienvenue dans votre Panier " + this.user.getPrenomUser() + " " + this.user.getNomUser());
 	lblNom.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblNom.setHorizontalAlignment(SwingConstants.CENTER);
 	lblNom.setBounds(0, 11, 894, 50);
 	Onglet1.add(lblNom);
+
+	panel = new JPanel();
+	panel.setBackground(new Color(204, 204, 204));
+	panel.setBounds(41, 86, 833, 384);
+	Onglet1.add(panel);
+	panel.setLayout(null);
+
+	lblPanierVide = new JLabel("Votre panier est vide");
+	lblPanierVide.setFont(new Font("Tahoma", Font.PLAIN, 25));
+	lblPanierVide.setHorizontalAlignment(SwingConstants.CENTER);
+	lblPanierVide.setBounds(0, 0, 833, 384);
+	lblPanierVide.setVisible(false);
+	panel.add(lblPanierVide);
+
+	scrollPane = new JScrollPane();
+	scrollPane.setBounds(0, 0, 833, 384);
+	panel.add(scrollPane);
+
+	table = new JTable();
+	table.setModel(
+		new DefaultTableModel(new Object[][] {}, new String[] { "Produit", "Quantité", "Prix Unitaire" }) {
+		    private static final long serialVersionUID = 1L;
+		    boolean[] columnEditables = new boolean[] { false, true, true };
+
+		    public boolean isCellEditable(int row, int column) {
+			return columnEditables[column];
+		    }
+		});
+	table.getColumnModel().getColumn(0).setResizable(false);
+	scrollPane.setViewportView(table);
+
+	lblTotal = new JLabel("Total : ");
+	lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 27));
+	lblTotal.setBounds(41, 534, 282, 42);
+	Onglet1.add(lblTotal);
 
 	ongletMenu = new JPanel();
 	ongletMenu.setBackground(Color.WHITE);
@@ -117,7 +176,7 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	ongletMenu.add(pnlAcceuil);
 	pnlAcceuil.addMouseListener(this);
 	pnlAcceuil.setLayout(null);
-	
+
 	pnlBoutique = new JPanel();
 	pnlBoutique.setBounds(0, 225, 180, 80);
 	ongletMenu.add(pnlBoutique);
@@ -134,28 +193,28 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	pnlLogout.setBounds(0, 558, 180, 43);
 	ongletMenu.add(pnlLogout);
 	pnlLogout.setLayout(null);
-	
+
 	lblAcceuil = new JLabel("Acceuil");
 	lblAcceuil.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
 	lblAcceuil.setBounds(66, 0, 114, 80);
 	lblAcceuil.addMouseListener(this);
 	pnlAcceuil.add(lblAcceuil);
-	
+
 	lblLogoAcceuil = new JLabel("");
 	lblLogoAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogoAcceuil.setBounds(0, 0, 64, 80);
 	lblLogoAcceuil.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/home.png")));
 	lblLogoAcceuil.addMouseListener(this);
 	pnlAcceuil.add(lblLogoAcceuil);
-	
+
 	lblBoutique = new JLabel("Boutique");
 	lblBoutique.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblBoutique.setHorizontalAlignment(SwingConstants.CENTER);
 	lblBoutique.setBounds(66, 0, 114, 80);
 	lblBoutique.addMouseListener(this);
 	pnlBoutique.add(lblBoutique);
-	
+
 	lblLogoBoutique = new JLabel("");
 	lblLogoBoutique.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogoBoutique.setBounds(0, 0, 64, 80);
@@ -201,19 +260,37 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	lblLogoOption.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/SettingsLogo.png")));
 	lblLogoOption.addMouseListener(this);
 	pnlSettings.add(lblLogoOption);
-	
+
 	lblPanier = new JLabel("Panier");
 	lblPanier.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblPanier.setHorizontalAlignment(SwingConstants.CENTER);
 	lblPanier.setBounds(66, 0, 114, 80);
 	lblPanier.setBackground(new Color(200, 200, 200));
 	pnlPanier.add(lblPanier);
-	
+
 	lblLogoPanier = new JLabel("");
 	lblLogoPanier.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogoPanier.setBounds(0, 0, 64, 80);
 	lblLogoPanier.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/panier.png")));
 	pnlPanier.add(lblLogoPanier);
+
+	// ----------------------------------------------------------------------------------------------
+
+	if (DaoDriveExpress.getContenuPanier(connection, user).isEmpty()) {
+	    scrollPane.setVisible(false);
+	    lblPanierVide.setVisible(true);
+	    lblTotal.setVisible(false);
+	    btnAcheter.setVisible(false);
+	}
+
+	HashMap<Produit, Integer> lePanier = DaoDriveExpress.getContenuPanier(connection, user);
+
+	DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+	for (Map.Entry<Produit, Integer> entry : lePanier.entrySet()) {
+	    model.addRow(new Object[] { entry.getKey().getLibProduit(), entry.getValue(),
+		    entry.getKey().getPrixProduit() * entry.getKey().getPromotionProduit() });
+	}
     }
 
     @Override
@@ -251,16 +328,18 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	    }
 	    // click pour le panel option
 	    if ((JLabel) e.getComponent() == this.lblOption || (JLabel) e.getComponent() == this.lblLogoOption) {
-		OptionPage op = new OptionPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.user);
+		OptionPage op = new OptionPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
+			this.user);
 		op.setUndecorated(true);
 		op.setVisible(true);
 		dispose();
 	    }
 	    // click pour le panel boutique
 	    if ((JLabel) e.getComponent() == this.lblBoutique || (JLabel) e.getComponent() == this.lblLogoBoutique) {
-		BoutiquePage op = new BoutiquePage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.user);
-		op.setUndecorated(true);
-		op.setVisible(true);
+		BoutiquePage bp = new BoutiquePage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
+			this.user);
+		bp.setUndecorated(true);
+		bp.setVisible(true);
 		dispose();
 	    }
 	    // click pour le panel deconnexion
@@ -273,6 +352,18 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	    }
 	} catch (Exception e2) {
 
+	}
+
+	// btn Ajout Panier
+	if (e.getComponent() == this.btnAcheter) {
+	    System.out.println("oui");
+	    DaoDriveExpress.supprContenuPanierUser(connect, user);
+	    System.out.println("oui2");
+	    PanierPage pp = new PanierPage(connect, getLocationOnScreen().x, getLocationOnScreen().y, user);
+	    System.out.println("oui3");
+	    pp.setUndecorated(true);
+	    pp.setVisible(true);
+	    dispose();
 	}
 
     }
@@ -318,7 +409,8 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	// TODO Stub de la méthode généré automatiquement
 	try {
 	    // Hover pour le panel deconnexion
-	    if ((JLabel) e.getComponent() == this.lblDeconnexion || (JLabel) e.getComponent() == this.lblLogoDeconnexion) {
+	    if ((JLabel) e.getComponent() == this.lblDeconnexion
+		    || (JLabel) e.getComponent() == this.lblLogoDeconnexion) {
 		this.pnlLogout.setBackground(new Color(220, 220, 220));
 		this.lblDeconnexion.setBackground(new Color(220, 220, 220));
 		this.lblLogoDeconnexion.setBackground(new Color(220, 220, 220));
@@ -352,7 +444,8 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	// TODO Stub de la méthode généré automatiquement
 	try {
 	    // Hover pour le panel deconnexion
-	    if ((JLabel) e.getComponent() == this.lblDeconnexion || (JLabel) e.getComponent() == this.lblLogoDeconnexion) {
+	    if ((JLabel) e.getComponent() == this.lblDeconnexion
+		    || (JLabel) e.getComponent() == this.lblLogoDeconnexion) {
 		this.pnlLogout.setBackground(new Color(240, 240, 240));
 		this.lblDeconnexion.setBackground(new Color(240, 240, 240));
 		this.lblLogoDeconnexion.setBackground(new Color(240, 240, 240));
