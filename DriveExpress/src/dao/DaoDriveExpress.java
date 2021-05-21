@@ -142,6 +142,42 @@ public class DaoDriveExpress {
 	}
 	return u;
     }
+    
+    public static Poste getPoste(Connection connect, int idPoste) {
+	Poste p;
+	p = null;
+	
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT * FROM POSTE WHERE IDPOSTE = " + idPoste + ";";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		p = new Poste(resultat.getInt(1), resultat.getString(2));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	
+	return p;
+    }
+    
+    public static Employe getEmploye(String mail, String mdp, Connection connect) {
+	Employe employe;
+	employe = null;
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT * FROM EMPLOYE WHERE MAILE = '" + mail + "' AND MDPE = '" + mdp + "';";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		employe = new Employe(resultat.getInt(1), DaoDriveExpress.getPoste(connect, resultat.getInt(2)), resultat.getString(3), resultat.getString(4),
+			resultat.getString(5), resultat.getInt(6), resultat.getString(7), resultat.getInt(8),
+			resultat.getString(9));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return employe;
+    }
 
     public static String getFullName(Connection connect, int idUser) {
 	String res = "";

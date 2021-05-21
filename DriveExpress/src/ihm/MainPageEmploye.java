@@ -98,7 +98,7 @@ public class MainPageEmploye extends JFrame implements MouseListener, MouseMotio
 	contentPane.add(Onglet1);
 	Onglet1.setLayout(null);
 	
-	lblNom = new JLabel("Bonjour " + this.employe.getPrenomEmploye() + " " + this.employe.getNomEmploye());
+	lblNom = new JLabel("Bonjour " + this.employe.getPrenomEmploye() + " " + this.employe.getNomEmploye() + " - Espace employé");
 	lblNom.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblNom.setHorizontalAlignment(SwingConstants.CENTER);
 	lblNom.setBounds(0, 11, 894, 50);

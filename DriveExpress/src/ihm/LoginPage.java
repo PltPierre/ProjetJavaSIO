@@ -203,6 +203,10 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 			this.isConnected = true;
 			this.isEmployee = true;
 			lblDbConnection.setText("olémarche + Employé");
+			MainPageEmploye mp = new MainPageEmploye(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, DaoDriveExpress.getEmploye(txtMail.getText(), txtMDP.getText(), connect));
+			mp.setUndecorated(true);
+			mp.setVisible(true);
+			dispose();
 
 		    } else {
 			lblDbConnection.setText("pabon");
