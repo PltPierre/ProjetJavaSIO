@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -32,6 +33,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class BoutiquePage extends JFrame implements MouseListener, MouseMotionListener, ActionListener, ListSelectionListener {
 
@@ -75,6 +78,8 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
     private JButton btnAjoutPanier;
     private JSpinner spiQuantite;
     private JLabel lblQuantite;
+    
+    private int spinnerValue;
 
     @SuppressWarnings("deprecation")
     public BoutiquePage(Connection connection, int posX, int posY, User user) {
@@ -91,6 +96,8 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
 	    this.connect = connection;
 	}
 
+	spinnerValue = 0;
+	
 	contentPane = new JPanel();
 	contentPane.setBackground(Color.BLACK);
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -172,7 +179,12 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
 	pnlDetailProduit.add(btnAjoutPanier);
 	
 	spiQuantite = new JSpinner();
-	spiQuantite.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
+	spiQuantite.addChangeListener(new ChangeListener() {
+		public void stateChanged(ChangeEvent arg0) {
+		    spinnerValue = Integer.parseInt(spiQuantite.getValue().toString());
+		}
+	});
+	spiQuantite.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 	spiQuantite.setBounds(748, 83, 46, 20);
 	pnlDetailProduit.add(spiQuantite);
 	
@@ -332,6 +344,20 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
     @Override
     public void mouseClicked(MouseEvent e) {
 	// TODO Stub de la méthode généré automatiquement
+
+	
+	// btn Ajout Panier
+	if(e.getComponent() == btnAjoutPanier) {
+	    try {
+		spiQuantite.commitEdit();
+	    } catch (ParseException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	    }
+	    Produit p = lstProduit.getSelectedValue();
+	    DaoDriveExpress.ajoutPanier(connect, user, p, spinnerValue);
+	}
+	
 	try {
 
 	    // click pour le panel acceuil
@@ -367,12 +393,6 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
 	    }
 	} catch (Exception e2) {
 
-	}
-	
-	// btn Ajout Panier
-	if(e.getComponent() == this.btnAjoutPanier) {
-	    Produit p = lstProduit.getSelectedValue();
-	    DaoDriveExpress.ajoutPanier(connect, user, p, (Integer) spiQuantite.getValue());
 	}
 
     }

@@ -281,16 +281,20 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	    lblPanierVide.setVisible(true);
 	    lblTotal.setVisible(false);
 	    btnAcheter.setVisible(false);
+	} else {
+	    HashMap<Produit, Integer> lePanier = DaoDriveExpress.getContenuPanier(connection, user);
+
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    double total = 0;
+
+	    for (Map.Entry<Produit, Integer> entry : lePanier.entrySet()) {
+		model.addRow(new Object[] { entry.getKey().getLibProduit(), entry.getValue(), entry.getKey().getPrixProduit() * entry.getKey().getPromotionProduit() });
+		total += (entry.getKey().getPrixProduit() * entry.getKey().getPromotionProduit())*entry.getValue();
+	    }
+	    
+	    lblTotal.setText(String.format("Total : %.2f €", total));
 	}
 
-	HashMap<Produit, Integer> lePanier = DaoDriveExpress.getContenuPanier(connection, user);
-
-	DefaultTableModel model = (DefaultTableModel) table.getModel();
-
-	for (Map.Entry<Produit, Integer> entry : lePanier.entrySet()) {
-	    model.addRow(new Object[] { entry.getKey().getLibProduit(), entry.getValue(),
-		    entry.getKey().getPrixProduit() * entry.getKey().getPromotionProduit() });
-	}
     }
 
     @Override
@@ -317,6 +321,16 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
     @Override
     public void mouseClicked(MouseEvent e) {
 	// TODO Stub de la méthode généré automatiquement
+
+	// btn Ajout Panier
+	if (e.getComponent() == this.btnAcheter) {
+	    DaoDriveExpress.supprContenuPanierUser(connect, user);
+	    PanierPage pp = new PanierPage(connect, getLocationOnScreen().x, getLocationOnScreen().y, user);
+	    pp.setUndecorated(true);
+	    pp.setVisible(true);
+	    dispose();
+	}
+
 	try {
 
 	    // click pour le panel acceuil
@@ -352,18 +366,6 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	    }
 	} catch (Exception e2) {
 
-	}
-
-	// btn Ajout Panier
-	if (e.getComponent() == this.btnAcheter) {
-	    System.out.println("oui");
-	    DaoDriveExpress.supprContenuPanierUser(connect, user);
-	    System.out.println("oui2");
-	    PanierPage pp = new PanierPage(connect, getLocationOnScreen().x, getLocationOnScreen().y, user);
-	    System.out.println("oui3");
-	    pp.setUndecorated(true);
-	    pp.setVisible(true);
-	    dispose();
 	}
 
     }

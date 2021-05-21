@@ -301,7 +301,7 @@ public class DaoDriveExpress {
 	    Statement stLienBD;
 	    try {
 		stLienBD = connect.createStatement();
-		String req = "UPDATE CONTIENT_PANIER_PRODUIT SET QUANTITE = QUANTITE + " + quantite + ";";
+		String req = "UPDATE CONTIENT_PANIER_PRODUIT SET QUANTITE = QUANTITE + " + quantite + " WHERE IDPRODUIT= " + p.getIdProduit() + ";";
 		stLienBD.executeUpdate(req);
 	    } catch (SQLException e) {
 		e.printStackTrace();
