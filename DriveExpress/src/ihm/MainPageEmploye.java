@@ -32,7 +32,6 @@ public class MainPageEmploye extends JFrame implements MouseListener, MouseMotio
     private JPanel ongletMenu;
     private JPanel pnlAcceuil;
     private JPanel pnlBoutique;
-    private JPanel pnlPanier;
     private JPanel pnlLogout;
     private JLabel lblLogo;
     private JPanel pnlSettings;
@@ -87,7 +86,7 @@ public class MainPageEmploye extends JFrame implements MouseListener, MouseMotio
 	lblExitBtn.setBounds(1018, 0, 68, 27);
 	topBar.add(lblExitBtn);
 	
-	lblNomPage = new JLabel("DriveExpress - Acceuil");
+	lblNomPage = new JLabel("DriveExpress - Livraison en attente");
 	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
 	lblNomPage.setBounds(10, 0, 230, 27);
 	topBar.add(lblNomPage);
@@ -122,18 +121,13 @@ public class MainPageEmploye extends JFrame implements MouseListener, MouseMotio
 	ongletMenu.add(pnlBoutique);
 	pnlBoutique.setLayout(null);
 
-	pnlPanier = new JPanel();
-	pnlPanier.setBounds(0, 307, 180, 80);
-	ongletMenu.add(pnlPanier);
-	pnlPanier.setLayout(null);
-
 	pnlLogout = new JPanel();
 	pnlLogout.setBounds(0, 558, 180, 43);
 	ongletMenu.add(pnlLogout);
 	pnlLogout.setLayout(null);
 	
-	lblAcceuil = new JLabel("Acceuil");
-	lblAcceuil.setFont(new Font("Tahoma", Font.PLAIN, 20));
+	lblAcceuil = new JLabel("Livraisons Ajout\u00E9es");
+	lblAcceuil.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	lblAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
 	lblAcceuil.setBounds(66, 0, 114, 80);
 	lblAcceuil.setBackground(new Color(200, 200, 200));
@@ -142,11 +136,11 @@ public class MainPageEmploye extends JFrame implements MouseListener, MouseMotio
 	lblLogoAcceuil = new JLabel("");
 	lblLogoAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogoAcceuil.setBounds(0, 0, 64, 80);
-	lblLogoAcceuil.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/home.png")));
+	lblLogoAcceuil.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LivraisonAjoutee.png")));
 	pnlAcceuil.add(lblLogoAcceuil);
 	
-	lblBoutique = new JLabel("Livraisons");
-	lblBoutique.setFont(new Font("Tahoma", Font.PLAIN, 20));
+	lblBoutique = new JLabel("Livraisons en attente");
+	lblBoutique.setFont(new Font("Tahoma", Font.PLAIN, 11));
 	lblBoutique.setHorizontalAlignment(SwingConstants.CENTER);
 	lblBoutique.setBounds(66, 0, 114, 80);
 	lblBoutique.setBackground(new Color(200, 200, 200));
@@ -156,24 +150,9 @@ public class MainPageEmploye extends JFrame implements MouseListener, MouseMotio
 	lblLogoBoutique = new JLabel("");
 	lblLogoBoutique.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogoBoutique.setBounds(0, 0, 64, 80);
-	lblLogoBoutique.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/boutique.png")));
+	lblLogoBoutique.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LivraisonAttente.png")));
 	lblLogoBoutique.addMouseListener(this);
 	pnlBoutique.add(lblLogoBoutique);
-	
-	lblPanier = new JLabel("Panier");
-	lblPanier.setFont(new Font("Tahoma", Font.PLAIN, 20));
-	lblPanier.setHorizontalAlignment(SwingConstants.CENTER);
-	lblPanier.setBounds(66, 0, 114, 80);
-	lblPanier.setBackground(new Color(200, 200, 200));
-	lblPanier.addMouseListener(this);
-	pnlPanier.add(lblPanier);
-	
-	lblLogoPanier = new JLabel("");
-	lblLogoPanier.setHorizontalAlignment(SwingConstants.CENTER);
-	lblLogoPanier.setBounds(0, 0, 64, 80);
-	lblLogoPanier.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/panier.png")));
-	lblLogoPanier.addMouseListener(this);
-	pnlPanier.add(lblLogoPanier);
 
 	lblDeconnexion = new JLabel("d\u00E9connexion");
 	lblDeconnexion.setBounds(51, 0, 129, 43);
@@ -322,7 +301,6 @@ public class MainPageEmploye extends JFrame implements MouseListener, MouseMotio
 	    }
 	    // Hover pour le panel Panier
 	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
-		this.pnlPanier.setBackground(new Color(220, 220, 220));
 		this.lblPanier.setBackground(new Color(220, 220, 220));
 		this.lblLogoPanier.setBackground(new Color(220, 220, 220));
 	    }
@@ -357,7 +335,6 @@ public class MainPageEmploye extends JFrame implements MouseListener, MouseMotio
 	    }
 	    // Hover pour le panel boutique
 	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
-		this.pnlPanier.setBackground(new Color(240, 240, 240));
 		this.lblPanier.setBackground(new Color(240, 240, 240));
 		this.lblLogoPanier.setBackground(new Color(240, 240, 240));
 	    }

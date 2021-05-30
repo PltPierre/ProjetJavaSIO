@@ -9,6 +9,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import dao.DaoDriveExpress;
+import metier.Employe;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,7 +22,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionListener;
 
 public class LoginPage extends JFrame implements MouseListener, MouseMotionListener, KeyListener {
-    
+
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JPanel leftSide;
@@ -38,8 +39,6 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
     private JButton btnCreerUnCompte;
     private JLabel lblNomPage;
 
-    private boolean isConnected;
-    private boolean isEmployee;
     private int mouseX;
     private int mouseY;
 
@@ -58,9 +57,6 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 	} else {
 	    setBounds(100, 100, 1080, 624);
 	}
-
-	isConnected = false;
-	isEmployee = false;
 
 	contentPane = new JPanel();
 	contentPane.setBackground(Color.WHITE);
@@ -81,12 +77,11 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 	topBar.setBounds(0, 0, 1086, 27);
 	contentPane.add(topBar);
 	topBar.setLayout(null);
-	
+
 	lblNomPage = new JLabel("DriveExpress - Connection");
 	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
 	lblNomPage.setBounds(10, 0, 230, 27);
 	topBar.add(lblNomPage);
-
 
 	lblExitBtn = new JLabel("X");
 	lblExitBtn.setToolTipText("Fermer");
@@ -192,21 +187,24 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 		lblDbConnection.setText("Veuillez renseigner tout les champs");
 	    } else {
 		if (DaoDriveExpress.Connect(txtMail.getText(), txtMDP.getText(), connect) != 0) {
-		    this.isConnected = true;
-		    lblDbConnection.setText("olémarche");
-		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, DaoDriveExpress.getUser(txtMail.getText(), txtMDP.getText(), connect));
+		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
+			    DaoDriveExpress.getUser(txtMail.getText(), txtMDP.getText(), connect));
 		    mp.setUndecorated(true);
 		    mp.setVisible(true);
 		    dispose();
 		} else {
 		    if (DaoDriveExpress.ConnectEmployee(txtMail.getText(), txtMDP.getText(), connect) != 0) {
-			this.isConnected = true;
-			this.isEmployee = true;
 			lblDbConnection.setText("olémarche + Employé");
-			MainPageEmploye mp = new MainPageEmploye(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, DaoDriveExpress.getEmploye(txtMail.getText(), txtMDP.getText(), connect));
-			mp.setUndecorated(true);
-			mp.setVisible(true);
-			dispose();
+			Employe employe = DaoDriveExpress.getEmploye(txtMail.getText(), txtMDP.getText(), connect);
+			if (employe.getLePoste().getIdPoste() == DaoDriveExpress.getPoste(connect, 1).getIdPoste()) {
+			    lblDbConnection.setText("olémarche + Admin");
+			    MainPageEmploye mp = new MainPageEmploye(this.connect, getLocationOnScreen().x,getLocationOnScreen().y, employe);
+			    mp.setUndecorated(true);
+			    mp.setVisible(true);
+			    dispose();
+			} else if (employe.getLePoste() == DaoDriveExpress.getPoste(connect, 2)) {
+
+			}
 
 		    } else {
 			lblDbConnection.setText("pabon");
@@ -269,16 +267,14 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 		lblDbConnection.setText("Veuillez renseigner tout les champs");
 	    } else {
 		if (DaoDriveExpress.Connect(txtMail.getText(), txtMDP.getText(), connect) != 0) {
-		    this.isConnected = true;
 		    lblDbConnection.setText("olémarche");
-		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, DaoDriveExpress.getUser(txtMail.getText(), txtMDP.getText(), connect));
+		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
+			    DaoDriveExpress.getUser(txtMail.getText(), txtMDP.getText(), connect));
 		    mp.setUndecorated(true);
 		    mp.setVisible(true);
 		    dispose();
 		} else {
 		    if (DaoDriveExpress.ConnectEmployee(txtMail.getText(), txtMDP.getText(), connect) != 0) {
-			this.isConnected = true;
-			this.isEmployee = true;
 			lblDbConnection.setText("olémarche + Employé");
 
 		    } else {

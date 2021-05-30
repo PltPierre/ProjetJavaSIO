@@ -7,12 +7,13 @@ public class Employe {
     private String nomEmploye;
     private String prenomEmploye;
     private String mailEmploye;
-    private int numTelEmploye;
+    private String numTelEmploye;
     private String adresseEmploye;
-    private int cpEmploye;
+    private String cpEmploye;
     private String villeEmploye;
+    private String password;
 
-    public Employe(int idEmploye, Poste lePoste, String nomEmploye, String prenomEmploye, String mailEmploye, int numTelEmploye, String adresseEmploye, int cpEmploye, String villeEmploye) {
+    public Employe(int idEmploye, Poste lePoste, String nomEmploye, String prenomEmploye, String mailEmploye, String numTelEmploye, String adresseEmploye, String cpEmploye, String villeEmploye, String password) {
 	this.idEmploye = idEmploye;
 	this.lePoste = lePoste;
 	this.nomEmploye = nomEmploye;
@@ -22,6 +23,7 @@ public class Employe {
 	this.adresseEmploye = adresseEmploye;
 	this.cpEmploye = cpEmploye;
 	this.villeEmploye = villeEmploye;
+	this.password = password;
     }
 
     public int getIdEmploye() {
@@ -44,7 +46,7 @@ public class Employe {
 	return this.mailEmploye;
     }
 
-    public int getNumTelEmploye() {
+    public String getNumTelEmploye() {
 	return this.numTelEmploye;
     }
 
@@ -52,12 +54,50 @@ public class Employe {
 	return this.adresseEmploye;
     }
 
-    public int getCpEmploye() {
+    public String getCpEmploye() {
 	return this.cpEmploye;
     }
 
     public String getVilleEmploye() {
 	return this.villeEmploye;
     }
+    
+    public String getPassword() {
+	return this.password;
+    }
+    
+    public void setPassword(String password) {
+	this.password = password;
+    }
+
+    public void setNomEmploye(String nomEmploye) {
+        this.nomEmploye = nomEmploye;
+    }
+
+    public void setPrenomEmploye(String prenomEmploye) {
+        this.prenomEmploye = prenomEmploye;
+    }
+
+    public void setMailEmploye(String mailEmploye) {
+        this.mailEmploye = mailEmploye;
+    }
+
+    public void setNumTelEmploye(String numTelEmploye) {
+        this.numTelEmploye = numTelEmploye;
+    }
+
+    public void setAdresseEmploye(String adresseEmploye) {
+        this.adresseEmploye = adresseEmploye;
+    }
+
+    public void setCpEmploye(String cpEmploye) {
+        this.cpEmploye = cpEmploye;
+    }
+
+    public void setVilleEmploye(String villeEmploye) {
+        this.villeEmploye = villeEmploye;
+    }
+    
+    
 
 }

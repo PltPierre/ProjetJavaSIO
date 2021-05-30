@@ -22,7 +22,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import metier.Paiement;
 import metier.Produit;
 import metier.User;
 import javax.swing.JTable;
@@ -281,8 +280,11 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 
 	// ----------------------------------------------------------------------------------------------
 
-	if (DaoDriveExpress.getContenuPanier(connection, user).isEmpty()) {
+	if (DaoDriveExpress.getContenuPanier(connection, user).isEmpty() || DaoDriveExpress.CheckUserHasLivraison(connection, user) != 0) {
 	    scrollPane.setVisible(false);
+	    if(DaoDriveExpress.CheckUserHasLivraison(connection, user) != 0) {
+		lblPanierVide.setText("Vous avez déjà une livraison en cours");
+	    }
 	    lblPanierVide.setVisible(true);
 	    lblTotal.setVisible(false);
 	    btnAcheter.setVisible(false);
@@ -329,10 +331,7 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 
 	// btn Ajout Panier
 	if (e.getComponent() == this.btnAcheter) {
-	    Paiement paiement = new Paiement(1, this.total, new Date(Instant.now().toEpochMilli()));
-	    System.out.println(paiement.getDatePaiement());
-	    DaoDriveExpress.ajoutPaiement(connect, paiement);
-	    DaoDriveExpress.supprContenuPanierUser(connect, user);
+	    DaoDriveExpress.ajoutPaiementLivraison(connect, this.total ,new Date(Instant.now().toEpochMilli()), DaoDriveExpress.getPanier(connect, user).getIdPanier());
 	    PanierPage pp = new PanierPage(connect, getLocationOnScreen().x, getLocationOnScreen().y, user);
 	    pp.setUndecorated(true);
 	    pp.setVisible(true);

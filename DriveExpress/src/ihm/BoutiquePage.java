@@ -26,6 +26,8 @@ import metier.User;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
@@ -36,7 +38,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
-public class BoutiquePage extends JFrame implements MouseListener, MouseMotionListener, ActionListener, ListSelectionListener {
+public class BoutiquePage extends JFrame
+	implements MouseListener, MouseMotionListener, ActionListener, ListSelectionListener {
 
     private static final long serialVersionUID = -8475963155634927953L;
     private JPanel contentPane;
@@ -70,7 +73,7 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
     private JList<Produit> lstProduit;
     DefaultListModel<Produit> model;
     private JPanel pnlDetailProduit;
-    
+
     private Vector<Produit> lesProduits;
     private Vector<TypeProduit> lesTypesProduit;
     private JLabel lblDesc;
@@ -78,7 +81,7 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
     private JButton btnAjoutPanier;
     private JSpinner spiQuantite;
     private JLabel lblQuantite;
-    
+
     private int spinnerValue;
 
     @SuppressWarnings("deprecation")
@@ -97,7 +100,7 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
 	}
 
 	spinnerValue = 0;
-	
+
 	contentPane = new JPanel();
 	contentPane.setBackground(Color.BLACK);
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -157,18 +160,18 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
 	Onglet1.add(pnlDetailProduit);
 	pnlDetailProduit.setLayout(null);
 	pnlDetailProduit.setVisible(false);
-	
+
 	lblDesc = new JLabel("test");
 	lblDesc.setHorizontalAlignment(SwingConstants.CENTER);
 	lblDesc.setBounds(203, 11, 380, 164);
 	pnlDetailProduit.add(lblDesc);
-	
+
 	lblPrix = new JLabel("Prix : ");
 	lblPrix.setFont(new Font("Tahoma", Font.PLAIN, 14));
 	lblPrix.setHorizontalAlignment(SwingConstants.CENTER);
 	lblPrix.setBounds(672, 11, 114, 30);
 	pnlDetailProduit.add(lblPrix);
-	
+
 	btnAjoutPanier = new JButton("Ajouter au panier");
 	btnAjoutPanier.setBounds(653, 120, 141, 55);
 	btnAjoutPanier.setForeground(Color.BLACK);
@@ -177,17 +180,17 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
 	btnAjoutPanier.addMouseListener(this);
 	btnAjoutPanier.setFocusable(false);
 	pnlDetailProduit.add(btnAjoutPanier);
-	
+
 	spiQuantite = new JSpinner();
 	spiQuantite.addChangeListener(new ChangeListener() {
-		public void stateChanged(ChangeEvent arg0) {
-		    spinnerValue = Integer.parseInt(spiQuantite.getValue().toString());
-		}
+	    public void stateChanged(ChangeEvent arg0) {
+		spinnerValue = Integer.parseInt(spiQuantite.getValue().toString());
+	    }
 	});
 	spiQuantite.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 	spiQuantite.setBounds(748, 83, 46, 20);
 	pnlDetailProduit.add(spiQuantite);
-	
+
 	lblQuantite = new JLabel("Quantit\u00E9 :");
 	lblQuantite.setFont(new Font("Tahoma", Font.PLAIN, 14));
 	lblQuantite.setBounds(653, 80, 67, 23);
@@ -313,7 +316,6 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
 	    cbTypeProduit.addItem(tp);
 	}
 
-
 	for (Produit p : this.lesProduits) {
 	    model.addElement(p);
 	}
@@ -345,19 +347,24 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
     public void mouseClicked(MouseEvent e) {
 	// TODO Stub de la méthode généré automatiquement
 
-	
 	// btn Ajout Panier
-	if(e.getComponent() == btnAjoutPanier) {
-	    try {
-		spiQuantite.commitEdit();
-	    } catch (ParseException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
+	if (e.getComponent() == btnAjoutPanier) {
+	    if (DaoDriveExpress.CheckUserHasLivraison(connect, user) == 0) {
+		try {
+		    spiQuantite.commitEdit();
+		} catch (ParseException e1) {
+		    // TODO Auto-generated catch block
+		    e1.printStackTrace();
+		}
+		Produit p = lstProduit.getSelectedValue();
+		DaoDriveExpress.ajoutPanier(connect, user, p, spinnerValue);
+		JOptionPane.showMessageDialog(this, "Produit ajouté au panier !");
 	    }
-	    Produit p = lstProduit.getSelectedValue();
-	    DaoDriveExpress.ajoutPanier(connect, user, p, spinnerValue);
+	    else {
+		JOptionPane.showMessageDialog(this, "Erreur : Livraison déjà en cours", "Erreur", JOptionPane.ERROR_MESSAGE);
+	    }
 	}
-	
+
 	try {
 
 	    // click pour le panel acceuil
@@ -511,15 +518,14 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
 	    pnlDetailProduit.setVisible(false);
 	    TypeProduit tp = (TypeProduit) cbTypeProduit.getSelectedItem();
 
-	    if(tp == null) {
+	    if (tp == null) {
 		this.model.clear();
-		for(Produit p : this.lesProduits) {
+		for (Produit p : this.lesProduits) {
 		    this.model.addElement(p);
 		}
-	    }
-	    else {
+	    } else {
 		this.model.clear();
-		for(Produit p : tp.getLesProduits()) {
+		for (Produit p : tp.getLesProduits()) {
 		    this.model.addElement(p);
 		}
 	    }
@@ -530,14 +536,14 @@ public class BoutiquePage extends JFrame implements MouseListener, MouseMotionLi
     @Override
     public void valueChanged(ListSelectionEvent arg0) {
 	// TODO Auto-generated method stub
-	if(arg0.getSource() == this.lstProduit && lstProduit.getSelectedValue() != null) {
+	if (arg0.getSource() == this.lstProduit && lstProduit.getSelectedValue() != null) {
 	    spiQuantite.setValue(1);
 	    Produit p = (Produit) lstProduit.getSelectedValue();
-	    
+
 	    pnlDetailProduit.setVisible(true);
 	    lblDesc.setText(p.getDescProduit());
-	    lblPrix.setText("Prix : " + p.getPrixProduit()*p.getPromotionProduit() + "€");
+	    lblPrix.setText("Prix : " + p.getPrixProduit() * p.getPromotionProduit() + "€");
 	}
-	
+
     }
 }

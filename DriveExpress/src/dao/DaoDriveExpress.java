@@ -2,6 +2,7 @@ package dao;
 
 import java.io.FileInputStream;
 import java.sql.*;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -142,11 +143,11 @@ public class DaoDriveExpress {
 	}
 	return u;
     }
-    
+
     public static Poste getPoste(Connection connect, int idPoste) {
 	Poste p;
 	p = null;
-	
+
 	try {
 	    Statement stLienBD = connect.createStatement();
 	    String req = "SELECT * FROM POSTE WHERE IDPOSTE = " + idPoste + ";";
@@ -157,10 +158,10 @@ public class DaoDriveExpress {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-	
+
 	return p;
     }
-    
+
     public static Employe getEmploye(String mail, String mdp, Connection connect) {
 	Employe employe;
 	employe = null;
@@ -169,9 +170,9 @@ public class DaoDriveExpress {
 	    String req = "SELECT * FROM EMPLOYE WHERE MAILE = '" + mail + "' AND MDPE = '" + mdp + "';";
 	    ResultSet resultat = stLienBD.executeQuery(req);
 	    while (resultat.next()) {
-		employe = new Employe(resultat.getInt(1), DaoDriveExpress.getPoste(connect, resultat.getInt(2)), resultat.getString(3), resultat.getString(4),
-			resultat.getString(5), resultat.getInt(6), resultat.getString(7), resultat.getInt(8),
-			resultat.getString(9));
+		employe = new Employe(resultat.getInt(1), DaoDriveExpress.getPoste(connect, resultat.getInt(2)),
+			resultat.getString(3), resultat.getString(4), resultat.getString(5), resultat.getString(6),
+			resultat.getString(7), resultat.getString(8), resultat.getString(9), mdp);
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -199,7 +200,7 @@ public class DaoDriveExpress {
     public static void CreationPanier(Connection connect, int idUser) {
 	try {
 	    Statement stLienBD = connect.createStatement();
-	    String req = "INSERT INTO PANIER(IDUSER, DATECRATION) VALUES(" + idUser + ", DATE_FORMAT(now(), %Y-%m-%d))";
+	    String req = "INSERT INTO PANIER(IDUSER, DATECREATION) VALUES(" + idUser + ", '"+ new Date(Instant.now().toEpochMilli()) +"');";
 	    stLienBD.executeUpdate(req);
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -316,11 +317,12 @@ public class DaoDriveExpress {
 
 	try {
 	    Statement stLienBD = connect.createStatement();
-	    String req = "SELECT COUNT(*) FROM CONTIENT_PANIER_PRODUIT WHERE IDPANIER =" + panier.getIdPanier() + " AND IDPRODUIT ="+ produit.getIdProduit();
+	    String req = "SELECT COUNT(*) FROM CONTIENT_PANIER_PRODUIT WHERE IDPANIER =" + panier.getIdPanier()
+		    + " AND IDPRODUIT =" + produit.getIdProduit();
 	    ResultSet resultat = stLienBD.executeQuery(req);
 
 	    while (resultat.next()) {
-		if(resultat.getInt(1) != 0) {
+		if (resultat.getInt(1) != 0) {
 		    b = true;
 		}
 	    }
@@ -337,7 +339,8 @@ public class DaoDriveExpress {
 	    Statement stLienBD;
 	    try {
 		stLienBD = connect.createStatement();
-		String req = "UPDATE CONTIENT_PANIER_PRODUIT SET QUANTITE = QUANTITE + " + quantite + " WHERE IDPRODUIT= " + p.getIdProduit() + ";";
+		String req = "UPDATE CONTIENT_PANIER_PRODUIT SET QUANTITE = QUANTITE + " + quantite
+			+ " WHERE IDPRODUIT= " + p.getIdProduit() + ";";
 		stLienBD.executeUpdate(req);
 	    } catch (SQLException e) {
 		e.printStackTrace();
@@ -354,25 +357,84 @@ public class DaoDriveExpress {
 	    }
 	}
     }
-    
+
     public static void supprContenuPanierUser(Connection connect, User user) {
 	Panier p = DaoDriveExpress.getPanier(connect, user);
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "DELETE FROM CONTIENT_PANIER_PRODUIT WHERE IDPANIER =" + p.getIdPanier();
+	    stLienBD.executeUpdate(req);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    public static void ajoutPaiementLivraison(Connection connect, double total, Date date, int idPanier) {
+	
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "INSERT INTO PAIEMENT(MONTANT, DATEPAIEMENT) VALUES(" + total + ", '" + date + "');";
+	    stLienBD.executeUpdate(req);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	
+	Paiement p = new Paiement(1, total, date);
+	
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT IDPAIEMENT FROM PAIEMENT WHERE MONTANT=" + p.getMontant() + " AND DATEPAIEMENT='" + p.getDatePaiement() + "';";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		p = new Paiement(resultat.getInt(1), p.getMontant(), p.getDatePaiement());
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	System.out.println(p.getIdPaiement());
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "INSERT INTO LIVRAISONDRIVE(IDPAIEMENT, IDPANIER) VALUES(" + p.getIdPaiement() + ", '" + idPanier + "');";
+	    stLienBD.executeUpdate(req);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    public static void updateUser(Connection connect, User user) {
+	Statement stLienBD;
 	    try {
-		Statement stLienBD = connect.createStatement();
-		String req = "DELETE FROM CONTIENT_PANIER_PRODUIT WHERE IDPANIER =" + p.getIdPanier();
+		stLienBD = connect.createStatement();
+		String req = "UPDATE USERS SET NOMUSER = '" + user.getNomUser() + "', PRENOMUSER = '" + user.getPrenomUser() + "', MAILUSER = '" + user.getUserMail() + "', MDPUSER = '" + user.getPasswordUser() + "', TELUSER = '" + user.getNumTel() + "', ADRESSEUSER = '" + user.getAdresse() + "', CPUSER = '" + user.getCP() + "', VILLEUSER = '" + user.getVille() + "'  WHERE IDUSER= " + user.getIDUser() + ";";
 		stLienBD.executeUpdate(req);
 	    } catch (SQLException e) {
 		e.printStackTrace();
 	    }
     }
     
-    public static void ajoutPaiement(Connection connect, Paiement p) {
-	try {
-		Statement stLienBD = connect.createStatement();
-		String req = "INSERT INTO PAIEMENT(MONTANT, DATEPAIEMENT) VALUES(" + p.getMontant() +", '"+ p.getDatePaiement() +"');";
+    public static void updateEmploye(Connection connect, Employe employe) {
+	Statement stLienBD;
+	    try {
+		stLienBD = connect.createStatement();
+		String req = "UPDATE EMPLOYE SET MDPE= '"+ employe.getPassword() + "', NOME = '" + employe.getNomEmploye() + "', PRENOME = '" + employe.getPrenomEmploye() + "', MAILE = '" + employe.getMailEmploye() + "', TELE = '" + employe.getNumTelEmploye() + "', ADRESSEE = '" + employe.getAdresseEmploye() + "', CPE = '" + employe.getCpEmploye() + "', VILLEE = '" + employe.getVilleEmploye() + "'  WHERE IDEMPLOYE= " + employe.getIdEmploye() + ";";
 		stLienBD.executeUpdate(req);
 	    } catch (SQLException e) {
 		e.printStackTrace();
 	    }
+    }
+
+    public static int CheckUserHasLivraison(Connection connect, User user) {
+	int res = 0;
+	try {
+	    Statement stLienBD = connect.createStatement();
+	    String req = "SELECT * FROM LIVRAISONDRIVE WHERE (DATEREMISE IS NULL OR DATEREMISE <= '"+ new Date(Instant.now().toEpochMilli()) +"') AND IDPANIER=(SELECT IDPANIER FROM PANIER WHERE IDUSER = "+  user.getIDUser() +");";
+	    ResultSet resultat = stLienBD.executeQuery(req);
+	    while (resultat.next()) {
+		res++;
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return res;
     }
 }
