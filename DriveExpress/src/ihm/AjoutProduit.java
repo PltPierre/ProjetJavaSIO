@@ -8,38 +8,26 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Vector;
 
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import dao.DaoDriveExpress;
+import metier.Employe;
 import metier.Produit;
 import metier.TypeProduit;
-import metier.User;
 
-import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
+import javax.swing.JComboBox;
 
-public class BoutiquePage extends JFrame
-	implements MouseListener, MouseMotionListener, ActionListener, ListSelectionListener {
+public class AjoutProduit extends JFrame implements MouseListener, MouseMotionListener {
 
     private static final long serialVersionUID = -8475963155634927953L;
     private JPanel contentPane;
@@ -48,47 +36,42 @@ public class BoutiquePage extends JFrame
     private Connection connect;
     private int mouseX;
     private int mouseY;
-    private User user;
+    private Employe employe;
     private JPanel Onglet1;
     private JPanel ongletMenu;
     private JPanel pnlAcceuil;
     private JPanel pnlBoutique;
-    private JPanel pnlPanier;
     private JPanel pnlLogout;
+    private JPanel pnlPanier;
     private JLabel lblLogo;
     private JPanel pnlSettings;
     private JLabel lblOption;
     private JLabel lblDeconnexion;
     private JLabel lblLogoOption;
     private JLabel lblLogoDeconnexion;
-    private JLabel lblAcceuil;
-    private JLabel lblLogoAcceuil;
-    private JLabel lblBoutique;
-    private JLabel lblLogoBoutique;
-    private JLabel lblNom;
-    private JLabel lblNomPage;
+    private JLabel lblType;
+    private JLabel lblLogoType;
+    private JLabel lblProduit;
+    private JLabel lblLogoProduit;
     private JLabel lblPanier;
     private JLabel lblLogoPanier;
-    private JComboBox<TypeProduit> cbTypeProduit;
-    private JList<Produit> lstProduit;
-    DefaultListModel<Produit> model;
-    private JPanel pnlDetailProduit;
-
-    private Vector<Produit> lesProduits;
+    private JLabel lblNom;
+    private JLabel lblNomPage;
+    private JLabel lblNewLabel;
+    private JTextField txtLibType;
+    private JButton btnAcheter;
+    private JLabel lblNewLabel_1;
+    private JTextField txtDesc;
+    private JLabel lblNewLabel_2;
+    private JLabel lblNewLabel_3;
+    private JTextField txtPrix;
+    private JComboBox<TypeProduit> cbType;
     private Vector<TypeProduit> lesTypesProduit;
-    private JLabel lblDesc;
-    private JLabel lblPrix;
-    private JButton btnAjoutPanier;
-    private JSpinner spiQuantite;
-    private JLabel lblQuantite;
 
-    private int spinnerValue;
-
-    @SuppressWarnings("deprecation")
-    public BoutiquePage(Connection connection, int posX, int posY, User user) {
+    public AjoutProduit(Connection connection, int posX, int posY, Employe employe) {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	this.user = user;
+	this.employe = employe;
 	if (posX != 0 && posY != 0) {
 	    setBounds(posX, posY, 1080, 630);
 	} else {
@@ -98,8 +81,6 @@ public class BoutiquePage extends JFrame
 	if (this.connect == null) {
 	    this.connect = connection;
 	}
-
-	spinnerValue = 0;
 
 	contentPane = new JPanel();
 	contentPane.setBackground(Color.BLACK);
@@ -115,11 +96,6 @@ public class BoutiquePage extends JFrame
 	contentPane.add(topBar);
 	topBar.setLayout(null);
 
-	lblNomPage = new JLabel("DriveExpress - Boutique");
-	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
-	lblNomPage.setBounds(10, 0, 230, 27);
-	topBar.add(lblNomPage);
-
 	lblExitBtn = new JLabel("X");
 	lblExitBtn.setToolTipText("Fermer");
 	lblExitBtn.setForeground(Color.RED);
@@ -130,71 +106,76 @@ public class BoutiquePage extends JFrame
 	lblExitBtn.setBounds(1018, 0, 68, 27);
 	topBar.add(lblExitBtn);
 
+	lblNomPage = new JLabel("DriveExpress - Livraison en attente");
+	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
+	lblNomPage.setBounds(10, 0, 230, 27);
+	topBar.add(lblNomPage);
+
 	Onglet1 = new JPanel();
 	Onglet1.setBackground(Color.WHITE);
 	Onglet1.setBounds(182, 27, 904, 612);
 	contentPane.add(Onglet1);
 	Onglet1.setLayout(null);
 
-	lblNom = new JLabel("Bienvenue dans la boutique " + this.user.getPrenomUser() + " " + this.user.getNomUser());
+	lblNom = new JLabel("Bonjour " + this.employe.getPrenomEmploye() + " " + this.employe.getNomEmploye()
+		+ " - Espace employé");
 	lblNom.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblNom.setHorizontalAlignment(SwingConstants.CENTER);
 	lblNom.setBounds(0, 11, 894, 50);
 	Onglet1.add(lblNom);
-
-	cbTypeProduit = new JComboBox<TypeProduit>();
-	cbTypeProduit.addActionListener(this);
-	cbTypeProduit.setBounds(333, 72, 232, 22);
-	Onglet1.add(cbTypeProduit);
-
-	model = new DefaultListModel<Produit>();
-	lstProduit = new JList<Produit>(model);
-	lstProduit.addListSelectionListener(this);
-	lstProduit.setBackground(Color.LIGHT_GRAY);
-	lstProduit.setBounds(333, 128, 232, 214);
-	Onglet1.add(lstProduit);
-
-	pnlDetailProduit = new JPanel();
-	pnlDetailProduit.setBackground(Color.WHITE);
-	pnlDetailProduit.setBounds(20, 382, 855, 186);
-	Onglet1.add(pnlDetailProduit);
-	pnlDetailProduit.setLayout(null);
-	pnlDetailProduit.setVisible(false);
-
-	lblDesc = new JLabel("test");
-	lblDesc.setHorizontalAlignment(SwingConstants.CENTER);
-	lblDesc.setBounds(203, 11, 380, 164);
-	pnlDetailProduit.add(lblDesc);
-
-	lblPrix = new JLabel("Prix : ");
-	lblPrix.setFont(new Font("Tahoma", Font.PLAIN, 14));
-	lblPrix.setHorizontalAlignment(SwingConstants.CENTER);
-	lblPrix.setBounds(672, 11, 114, 30);
-	pnlDetailProduit.add(lblPrix);
-
-	btnAjoutPanier = new JButton("Ajouter au panier");
-	btnAjoutPanier.setBounds(653, 120, 141, 55);
-	btnAjoutPanier.setForeground(Color.BLACK);
-	btnAjoutPanier.setBackground(Color.GREEN);
-	btnAjoutPanier.setBorderPainted(false);
-	btnAjoutPanier.addMouseListener(this);
-	btnAjoutPanier.setFocusable(false);
-	pnlDetailProduit.add(btnAjoutPanier);
-
-	spiQuantite = new JSpinner();
-	spiQuantite.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent arg0) {
-		spinnerValue = Integer.parseInt(spiQuantite.getValue().toString());
-	    }
-	});
-	spiQuantite.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-	spiQuantite.setBounds(748, 83, 46, 20);
-	pnlDetailProduit.add(spiQuantite);
-
-	lblQuantite = new JLabel("Quantit\u00E9 :");
-	lblQuantite.setFont(new Font("Tahoma", Font.PLAIN, 14));
-	lblQuantite.setBounds(653, 80, 67, 23);
-	pnlDetailProduit.add(lblQuantite);
+	
+	lblNewLabel = new JLabel("Description Produit :");
+	lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	lblNewLabel.setBounds(476, 123, 188, 26);
+	Onglet1.add(lblNewLabel);
+	
+	txtLibType = new JTextField();
+	txtLibType.setFont(new Font("Tahoma", Font.PLAIN, 14));
+	txtLibType.setBounds(63, 160, 282, 34);
+	Onglet1.add(txtLibType);
+	txtLibType.setColumns(10);
+	
+	btnAcheter = new JButton("Valider");
+	btnAcheter.setFont(new Font("Tahoma", Font.PLAIN, 20));
+	btnAcheter.setBounds(733, 535, 141, 55);
+	btnAcheter.setForeground(Color.BLACK);
+	btnAcheter.setBackground(Color.GREEN);
+	btnAcheter.setBorderPainted(false);
+	btnAcheter.addMouseListener(this);
+	btnAcheter.setFocusable(false);
+	Onglet1.add(btnAcheter);
+	
+	lblNewLabel_1 = new JLabel("Nom Produit :");
+	lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	lblNewLabel_1.setBounds(63, 123, 188, 26);
+	Onglet1.add(lblNewLabel_1);
+	
+	txtDesc = new JTextField();
+	txtDesc.setFont(new Font("Tahoma", Font.PLAIN, 14));
+	txtDesc.setColumns(10);
+	txtDesc.setBounds(476, 160, 282, 34);
+	Onglet1.add(txtDesc);
+	
+	lblNewLabel_2 = new JLabel("Prix Produit :");
+	lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	lblNewLabel_2.setBounds(63, 253, 188, 26);
+	Onglet1.add(lblNewLabel_2);
+	
+	lblNewLabel_3 = new JLabel("Type Produit :");
+	lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	lblNewLabel_3.setBounds(476, 253, 188, 26);
+	Onglet1.add(lblNewLabel_3);
+	
+	txtPrix = new JTextField();
+	txtPrix.setFont(new Font("Tahoma", Font.PLAIN, 14));
+	txtPrix.setColumns(10);
+	txtPrix.setBounds(63, 290, 282, 34);
+	Onglet1.add(txtPrix);
+	
+	cbType = new JComboBox<TypeProduit>();
+	cbType.setFont(new Font("Tahoma", Font.PLAIN, 14));
+	cbType.setBounds(476, 290, 282, 34);
+	Onglet1.add(cbType);
 
 	ongletMenu = new JPanel();
 	ongletMenu.setBackground(Color.WHITE);
@@ -204,52 +185,68 @@ public class BoutiquePage extends JFrame
 
 	pnlAcceuil = new JPanel();
 	pnlAcceuil.setBounds(0, 143, 180, 80);
-	pnlAcceuil.setBackground(new Color(240, 240, 240));
 	ongletMenu.add(pnlAcceuil);
 	pnlAcceuil.addMouseListener(this);
 	pnlAcceuil.setLayout(null);
-
-	pnlBoutique = new JPanel();
-	pnlBoutique.setBounds(0, 225, 180, 80);
-	ongletMenu.add(pnlBoutique);
-	pnlBoutique.setBackground(new Color(200, 200, 200));
-	pnlBoutique.setLayout(null);
 
 	pnlPanier = new JPanel();
 	pnlPanier.setBounds(0, 307, 180, 80);
 	ongletMenu.add(pnlPanier);
 	pnlPanier.setLayout(null);
 
+	pnlBoutique = new JPanel();
+	pnlBoutique.setBounds(0, 225, 180, 80);
+	pnlBoutique.setBackground(new Color(200, 200, 200));
+	ongletMenu.add(pnlBoutique);
+	pnlBoutique.setLayout(null);
+
 	pnlLogout = new JPanel();
 	pnlLogout.setBounds(0, 558, 180, 43);
 	ongletMenu.add(pnlLogout);
 	pnlLogout.setLayout(null);
 
-	lblAcceuil = new JLabel("Acceuil");
-	lblAcceuil.setFont(new Font("Tahoma", Font.PLAIN, 20));
-	lblAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
-	lblAcceuil.setBounds(66, 0, 114, 80);
-	lblAcceuil.addMouseListener(this);
-	pnlAcceuil.add(lblAcceuil);
+	lblType = new JLabel("Ajout Type Produit");
+	lblType.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	lblType.setHorizontalAlignment(SwingConstants.CENTER);
+	lblType.setBounds(66, 0, 114, 80);
+	lblType.setBackground(new Color(200, 200, 200));
+	pnlAcceuil.add(lblType);
 
-	lblLogoAcceuil = new JLabel("");
-	lblLogoAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
-	lblLogoAcceuil.setBounds(0, 0, 64, 80);
-	lblLogoAcceuil.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/home.png")));
-	lblLogoAcceuil.addMouseListener(this);
-	pnlAcceuil.add(lblLogoAcceuil);
+	lblLogoType = new JLabel("");
+	lblLogoType.setHorizontalAlignment(SwingConstants.CENTER);
+	lblLogoType.setBounds(0, 0, 64, 80);
+	lblLogoType.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoType.png")));
+	pnlAcceuil.add(lblLogoType);
 
-	lblBoutique = new JLabel("Boutique");
-	lblBoutique.setFont(new Font("Tahoma", Font.PLAIN, 20));
-	lblBoutique.setHorizontalAlignment(SwingConstants.CENTER);
-	lblBoutique.setBounds(66, 0, 114, 80);
-	pnlBoutique.add(lblBoutique);
+	lblProduit = new JLabel("Ajout Produit");
+	lblProduit.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	lblProduit.setHorizontalAlignment(SwingConstants.CENTER);
+	lblProduit.setBounds(66, 0, 114, 80);
+	lblProduit.setBackground(new Color(200, 200, 200));
+	lblProduit.addMouseListener(this);
+	pnlBoutique.add(lblProduit);
 
-	lblLogoBoutique = new JLabel("");
-	lblLogoBoutique.setHorizontalAlignment(SwingConstants.CENTER);
-	lblLogoBoutique.setBounds(0, 0, 64, 80);
-	lblLogoBoutique.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/boutique.png")));
-	pnlBoutique.add(lblLogoBoutique);
+	lblLogoProduit = new JLabel("");
+	lblLogoProduit.setHorizontalAlignment(SwingConstants.CENTER);
+	lblLogoProduit.setBounds(0, 0, 64, 80);
+	lblLogoProduit.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoProduit.png")));
+	lblLogoProduit.addMouseListener(this);
+	pnlBoutique.add(lblLogoProduit);
+
+	lblPanier = new JLabel("Gestion employé");
+	lblPanier.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	lblPanier.setHorizontalAlignment(SwingConstants.CENTER);
+	lblPanier.setBounds(66, 0, 114, 80);
+	lblPanier.setBackground(new Color(200, 200, 200));
+	lblPanier.addMouseListener(this);
+	pnlPanier.add(lblPanier);
+
+	lblLogoPanier = new JLabel("");
+	lblLogoPanier.setHorizontalAlignment(SwingConstants.CENTER);
+	lblLogoPanier.setBounds(0, 0, 64, 80);
+	lblLogoPanier.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoEmployes.png")));
+	lblLogoPanier.addMouseListener(this);
+	pnlPanier.add(lblLogoPanier);
 
 	lblDeconnexion = new JLabel("d\u00E9connexion");
 	lblDeconnexion.setBounds(51, 0, 129, 43);
@@ -289,40 +286,15 @@ public class BoutiquePage extends JFrame
 	lblLogoOption.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/SettingsLogo.png")));
 	lblLogoOption.addMouseListener(this);
 	pnlSettings.add(lblLogoOption);
-
-	lblPanier = new JLabel("Panier");
-	lblPanier.setFont(new Font("Tahoma", Font.PLAIN, 20));
-	lblPanier.setHorizontalAlignment(SwingConstants.CENTER);
-	lblPanier.setBounds(66, 0, 114, 80);
-	lblPanier.setBackground(new Color(200, 200, 200));
-	lblPanier.addMouseListener(this);
-	pnlPanier.add(lblPanier);
-
-	lblLogoPanier = new JLabel("");
-	lblLogoPanier.setHorizontalAlignment(SwingConstants.CENTER);
-	lblLogoPanier.setBounds(0, 0, 64, 80);
-	lblLogoPanier.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/panier.png")));
-	lblLogoPanier.addMouseListener(this);
-	pnlPanier.add(lblLogoPanier);
-
-	// ---------------------------------
-	// récupère les types produits et les produits
+	
+	//-------------------------------------------------------
+	//get les types de produits
 	this.lesTypesProduit = DaoDriveExpress.getTypeProduit(connection);
-	this.lesProduits = DaoDriveExpress.getProduits(connection, this.lesTypesProduit);
-
-	// met en index 0 un objet null (pour la catégorie 'tout')
-	cbTypeProduit.addItem(null);
-
-	// assigne les type produit au menu déroulant
+	
+	//les ajoutes dans la liste déroulante
 	for (TypeProduit tp : this.lesTypesProduit) {
-	    cbTypeProduit.addItem(tp);
+	    cbType.addItem(tp);
 	}
-
-	// affiche les produits dans la liste de produit
-	for (Produit p : this.lesProduits) {
-	    model.addElement(p);
-	}
-
     }
 
     @Override
@@ -348,49 +320,31 @@ public class BoutiquePage extends JFrame
 
     @Override
     public void mouseClicked(MouseEvent e) {
-	// TODO Stub de la méthode généré automatiquement
-
-	// btn Ajout Panier
-	if (e.getComponent() == btnAjoutPanier) {
-	    if (DaoDriveExpress.CheckUserHasLivraison(connect, user) == 0) {
-		try {
-		    spiQuantite.commitEdit();
-		} catch (ParseException e1) {
-		    // TODO Auto-generated catch block
-		    e1.printStackTrace();
-		}
-		Produit p = lstProduit.getSelectedValue();
-		DaoDriveExpress.ajoutPanier(connect, user, p, spinnerValue);
-		JOptionPane.showMessageDialog(this, "Produit ajouté au panier !");
-	    }
-	    else {
-		JOptionPane.showMessageDialog(this, "Erreur : Livraison déjà en cours", "Erreur", JOptionPane.ERROR_MESSAGE);
-	    }
+	// btn valider qui ajoute le produit dans la bdd
+	
+	if (e.getComponent() == this.btnAcheter) {
+	    JOptionPane.showMessageDialog(this, "Produit ajouté !");
+	    DaoDriveExpress.ajoutProduit(connect, new Produit(1, (TypeProduit) this.cbType.getSelectedItem(), this.txtLibType.getText(), this.txtDesc.getText(), Double.parseDouble(this.txtPrix.getText()), 0));
+	    AjoutTypeProduit ap = new AjoutTypeProduit(connect, getLocationOnScreen().x, getLocationOnScreen().y, this.employe);
+	    ap.setUndecorated(true);
+	    ap.setVisible(true);
+	    dispose();
 	}
-
+	
 	try {
-
-	    // click pour le panel acceuil
-	    if ((JLabel) e.getComponent() == this.lblLogoAcceuil || (JLabel) e.getComponent() == this.lblAcceuil) {
-		MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.user);
-		mp.setUndecorated(true);
-		mp.setVisible(true);
+	 // click pour le panel Type
+	    if ((JLabel) e.getComponent() == this.lblProduit || (JLabel) e.getComponent() == this.lblLogoProduit) {
+		AjoutProduit ap = new AjoutProduit(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.employe);
+		ap.setUndecorated(true);
+		ap.setVisible(true);
 		dispose();
 	    }
 	    // click pour le panel option
 	    if ((JLabel) e.getComponent() == this.lblOption || (JLabel) e.getComponent() == this.lblLogoOption) {
 		OptionPage op = new OptionPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
-			this.user);
+			this.employe);
 		op.setUndecorated(true);
 		op.setVisible(true);
-		dispose();
-	    }
-	    // click pour le panel Panier
-	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
-		PanierPage pp = new PanierPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
-			this.user);
-		pp.setUndecorated(true);
-		pp.setVisible(true);
 		dispose();
 	    }
 	    // click pour le panel deconnexion
@@ -460,15 +414,15 @@ public class BoutiquePage extends JFrame
 		this.lblOption.setBackground(new Color(220, 220, 220));
 		this.lblLogoOption.setBackground(new Color(220, 220, 220));
 	    }
-	    // Hover pour le panel Acceuil
-	    if ((JLabel) e.getComponent() == this.lblAcceuil || (JLabel) e.getComponent() == this.lblLogoAcceuil) {
-		this.pnlAcceuil.setBackground(new Color(220, 220, 220));
-		this.lblAcceuil.setBackground(new Color(220, 220, 220));
-		this.lblLogoAcceuil.setBackground(new Color(220, 220, 220));
+
+	    // Hover pour le panel Boutique
+	    if ((JLabel) e.getComponent() == this.lblProduit || (JLabel) e.getComponent() == this.lblLogoProduit) {
+		this.pnlBoutique.setBackground(new Color(220, 220, 220));
+		this.lblProduit.setBackground(new Color(220, 220, 220));
+		this.lblLogoProduit.setBackground(new Color(220, 220, 220));
 	    }
 	    // Hover pour le panel Panier
 	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
-		this.pnlPanier.setBackground(new Color(220, 220, 220));
 		this.lblPanier.setBackground(new Color(220, 220, 220));
 		this.lblLogoPanier.setBackground(new Color(220, 220, 220));
 	    }
@@ -495,57 +449,19 @@ public class BoutiquePage extends JFrame
 		this.lblOption.setBackground(new Color(240, 240, 240));
 		this.lblLogoOption.setBackground(new Color(240, 240, 240));
 	    }
-	    // hover pour le panel acceuil
-	    if ((JLabel) e.getComponent() == this.lblAcceuil || (JLabel) e.getComponent() == this.lblLogoAcceuil) {
-		this.pnlAcceuil.setBackground(new Color(240, 240, 240));
-		this.lblAcceuil.setBackground(new Color(240, 240, 240));
-		this.lblLogoAcceuil.setBackground(new Color(240, 240, 240));
+	    // Hover pour le panel boutique
+	    if ((JLabel) e.getComponent() == this.lblProduit || (JLabel) e.getComponent() == this.lblLogoProduit) {
+		this.pnlBoutique.setBackground(new Color(240, 240, 240));
+		this.lblProduit.setBackground(new Color(240, 240, 240));
+		this.lblLogoProduit.setBackground(new Color(240, 240, 240));
 	    }
 	    // Hover pour le panel boutique
 	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
-		this.pnlPanier.setBackground(new Color(240, 240, 240));
 		this.lblPanier.setBackground(new Color(240, 240, 240));
 		this.lblLogoPanier.setBackground(new Color(240, 240, 240));
 	    }
 	} catch (Exception e2) {
 
-	}
-
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent arg0) {
-	//change le model en fonction de la catégorie séléctionné
-	if (arg0.getSource() == this.cbTypeProduit) {
-	    lstProduit.clearSelection();
-	    pnlDetailProduit.setVisible(false);
-	    TypeProduit tp = (TypeProduit) cbTypeProduit.getSelectedItem();
-
-	    if (tp == null) {
-		this.model.clear();
-		for (Produit p : this.lesProduits) {
-		    this.model.addElement(p);
-		}
-	    } else {
-		this.model.clear();
-		for (Produit p : tp.getLesProduits()) {
-		    this.model.addElement(p);
-		}
-	    }
-	}
-
-    }
-
-    @Override
-    public void valueChanged(ListSelectionEvent arg0) {
-	// change la partie basse en fonction de la séléction du produit dans la liste de produit
-	if (arg0.getSource() == this.lstProduit && lstProduit.getSelectedValue() != null) {
-	    spiQuantite.setValue(1);
-	    Produit p = (Produit) lstProduit.getSelectedValue();
-
-	    pnlDetailProduit.setVisible(true);
-	    lblDesc.setText(p.getDescProduit());
-	    lblPrix.setText("Prix : " + p.getPrixProduit() * p.getPromotionProduit() + "€");
 	}
 
     }
