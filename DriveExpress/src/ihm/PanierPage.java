@@ -280,6 +280,7 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 
 	// ----------------------------------------------------------------------------------------------
 
+	//check si l'user a une livraison en cours (si oui impossible de voir le panier)
 	if (DaoDriveExpress.getContenuPanier(connection, user).isEmpty() || DaoDriveExpress.CheckUserHasLivraison(connection, user) != 0) {
 	    scrollPane.setVisible(false);
 	    if(DaoDriveExpress.CheckUserHasLivraison(connection, user) != 0) {
@@ -289,6 +290,7 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
 	    lblTotal.setVisible(false);
 	    btnAcheter.setVisible(false);
 	} else {
+	    //récupère le contenu du panier et le met dans la tableau
 	    HashMap<Produit, Integer> lePanier = DaoDriveExpress.getContenuPanier(connection, user);
 
 	    DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -329,7 +331,7 @@ public class PanierPage extends JFrame implements MouseListener, MouseMotionList
     public void mouseClicked(MouseEvent e) {
 	// TODO Stub de la méthode généré automatiquement
 
-	// btn Ajout Panier
+	// btn Ajout Panier (ajoute une livraison dans la bdd)
 	if (e.getComponent() == this.btnAcheter) {
 	    DaoDriveExpress.ajoutPaiementLivraison(connect, this.total ,new Date(Instant.now().toEpochMilli()), DaoDriveExpress.getPanier(connect, user).getIdPanier());
 	    PanierPage pp = new PanierPage(connect, getLocationOnScreen().x, getLocationOnScreen().y, user);

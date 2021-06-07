@@ -42,6 +42,7 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
     private int mouseX;
     private int mouseY;
 
+    // constructeur
     public LoginPage(Connection connection, int posX, int posY) {
 	if (this.connect == null) {
 	    connect = connection;
@@ -151,6 +152,7 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 
     }
 
+    // evenement clique de la souris
     @Override
     public void mouseClicked(MouseEvent e) {
 	// Bouton Créer un compte va vers page d'inscription
@@ -181,33 +183,43 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 	    }
 	}
 
-	// test de Bouton de validation (A modifier)
+	// Bouton de validation de login
 	if (e.getSource() == btnValidationConnection) {
+	    // si les champs sont vide
 	    if (txtMDP.getText().isEmpty() || txtMail.getText().isEmpty()) {
 		lblDbConnection.setText("Veuillez renseigner tout les champs");
 	    } else {
+		// login pour un utilisateur
 		if (DaoDriveExpress.Connect(txtMail.getText(), txtMDP.getText(), connect) != 0) {
 		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
 			    DaoDriveExpress.getUser(txtMail.getText(), txtMDP.getText(), connect));
 		    mp.setUndecorated(true);
 		    mp.setVisible(true);
 		    dispose();
-		} else {
+
+		} else { // else pour employée
 		    if (DaoDriveExpress.ConnectEmployee(txtMail.getText(), txtMDP.getText(), connect) != 0) {
-			lblDbConnection.setText("olémarche + Employé");
+			// get l'employée
 			Employe employe = DaoDriveExpress.getEmploye(txtMail.getText(), txtMDP.getText(), connect);
+			// login pour poste 1 = admin
 			if (employe.getLePoste().getIdPoste() == DaoDriveExpress.getPoste(connect, 1).getIdPoste()) {
-			    lblDbConnection.setText("olémarche + Admin");
-			    MainPageEmploye mp = new MainPageEmploye(this.connect, getLocationOnScreen().x,getLocationOnScreen().y, employe);
+			    AjoutTypeProduit ap = new AjoutTypeProduit(this.connect, getLocationOnScreen().x,
+				    getLocationOnScreen().y, employe);
+			    ap.setUndecorated(true);
+			    ap.setVisible(true);
+			    dispose();
+			    // login pour poste 2 = employé
+			} else if (employe.getLePoste().getIdPoste() == DaoDriveExpress.getPoste(connect, 2)
+				.getIdPoste()) {
+			    MainPageEmploye mp = new MainPageEmploye(this.connect, getLocationOnScreen().x,
+				    getLocationOnScreen().y, employe);
 			    mp.setUndecorated(true);
 			    mp.setVisible(true);
 			    dispose();
-			} else if (employe.getLePoste() == DaoDriveExpress.getPoste(connect, 2)) {
-
 			}
 
 		    } else {
-			lblDbConnection.setText("pabon");
+			lblDbConnection.setText("pas bon");
 		    }
 		}
 	    }
@@ -266,19 +278,37 @@ public class LoginPage extends JFrame implements MouseListener, MouseMotionListe
 	    if (txtMDP.getText().isEmpty() || txtMail.getText().isEmpty()) {
 		lblDbConnection.setText("Veuillez renseigner tout les champs");
 	    } else {
+		// login pour un utilisateur
 		if (DaoDriveExpress.Connect(txtMail.getText(), txtMDP.getText(), connect) != 0) {
-		    lblDbConnection.setText("olémarche");
 		    MainPage mp = new MainPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y,
 			    DaoDriveExpress.getUser(txtMail.getText(), txtMDP.getText(), connect));
 		    mp.setUndecorated(true);
 		    mp.setVisible(true);
 		    dispose();
-		} else {
+
+		} else { // else pour employée
 		    if (DaoDriveExpress.ConnectEmployee(txtMail.getText(), txtMDP.getText(), connect) != 0) {
-			lblDbConnection.setText("olémarche + Employé");
+			// get l'employée
+			Employe employe = DaoDriveExpress.getEmploye(txtMail.getText(), txtMDP.getText(), connect);
+			// login pour poste 1 = admin
+			if (employe.getLePoste().getIdPoste() == DaoDriveExpress.getPoste(connect, 1).getIdPoste()) {
+			    AjoutTypeProduit ap = new AjoutTypeProduit(this.connect, getLocationOnScreen().x,
+				    getLocationOnScreen().y, employe);
+			    ap.setUndecorated(true);
+			    ap.setVisible(true);
+			    dispose();
+			    // login pour poste 2 = employé
+			} else if (employe.getLePoste().getIdPoste() == DaoDriveExpress.getPoste(connect, 2)
+				.getIdPoste()) {
+			    MainPageEmploye mp = new MainPageEmploye(this.connect, getLocationOnScreen().x,
+				    getLocationOnScreen().y, employe);
+			    mp.setUndecorated(true);
+			    mp.setVisible(true);
+			    dispose();
+			}
 
 		    } else {
-			lblDbConnection.setText("pabon");
+			lblDbConnection.setText("pas bon");
 		    }
 		}
 	    }

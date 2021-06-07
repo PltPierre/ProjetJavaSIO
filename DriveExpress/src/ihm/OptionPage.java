@@ -72,6 +72,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
     private JTextField txtAdresse;
     private JButton btnValider;
 
+    // constructeur (page commune entre employé et user)
     public OptionPage(Connection connection, int posX, int posY, Object person) {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -85,6 +86,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	    this.connect = connection;
 	}
 
+	//regarde si c'est un utilisateur ou un employé
 	if (person instanceof User) {
 	    this.user = (User) person;
 	} else {
@@ -238,6 +240,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	ongletMenu.add(pnlLogout);
 	pnlLogout.setLayout(null);
 
+	//bouton sur le coté différents si user ou employé
 	if (person instanceof User) {
 
 	    pnlPanier = new JPanel();
@@ -362,7 +365,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	pnlSettings.add(lblLogoOption);
 
 	// --------------------------------------------------------------
-
+	// champs différent si c'est un utilisateur ou un employé
 	if (person instanceof User) {
 	    txtPrenom.setText(((User) person).getPrenomUser());
 	    txtNom.setText(((User) person).getNomUser());
@@ -411,6 +414,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	// TODO Stub de la méthode généré automatiquement
 
 	if (e.getSource() == btnValider) {
+	    
 	    // check si les champs sont bon
 	    boolean enregistrementValide = false;
 	    if (DaoDriveExpress.validate(this.txtMail.getText())) {
@@ -428,6 +432,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	    enregistrementValide = this.checkJTextFieldString(this.txtAdresse) && enregistrementValide;
 	    enregistrementValide = this.checkJTextFieldString(this.txtMDP) && enregistrementValide;
 
+	    // update les infos dans l'instance soit d'utilisateur soit d'employé
 	    if (enregistrementValide && this.user instanceof User) {
 
 		((User) this.user).setAdresse(this.txtAdresse.getText());
