@@ -39,10 +39,10 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
     private Employe employe;
     private JPanel Onglet1;
     private JPanel ongletMenu;
-    private JPanel pnlAcceuil;
-    private JPanel pnlBoutique;
+    private JPanel pnlTypeProduit;
+    private JPanel pnlProduits;
     private JPanel pnlLogout;
-    private JPanel pnlPanier;
+    private JPanel pnlEmployes;
     private JLabel lblLogo;
     private JPanel pnlSettings;
     private JLabel lblOption;
@@ -51,10 +51,10 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
     private JLabel lblLogoDeconnexion;
     private JLabel lblType;
     private JLabel lblLogoType;
-    private JLabel lblProduit;
+    private JLabel lblProduits;
     private JLabel lblLogoProduit;
-    private JLabel lblPanier;
-    private JLabel lblLogoPanier;
+    private JLabel lblEmployes;
+    private JLabel lblLogoEmployes;
     private JLabel lblNom;
     private JLabel lblNomPage;
     private JLabel lblNewLabel;
@@ -70,23 +70,23 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
 
     public AjoutProduit(Connection connection, int posX, int posY, Employe employe) {
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+	
 	this.employe = employe;
 	if (posX != 0 && posY != 0) {
 	    setBounds(posX, posY, 1080, 630);
 	} else {
 	    setBounds(100, 100, 1080, 624);
 	}
-
+	
 	if (this.connect == null) {
 	    this.connect = connection;
 	}
-
+	
 	contentPane = new JPanel();
 	contentPane.setBackground(Color.BLACK);
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
-
+	
 	topBar = new JPanel();
 	topBar.setBackground(SystemColor.activeCaptionBorder);
 	topBar.addMouseMotionListener(this);
@@ -110,15 +110,14 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
 	lblNomPage.setFont(new Font("Tahoma", Font.PLAIN, 14));
 	lblNomPage.setBounds(10, 0, 230, 27);
 	topBar.add(lblNomPage);
-
+	
 	Onglet1 = new JPanel();
 	Onglet1.setBackground(Color.WHITE);
 	Onglet1.setBounds(182, 27, 904, 612);
 	contentPane.add(Onglet1);
 	Onglet1.setLayout(null);
 
-	lblNom = new JLabel("Bonjour " + this.employe.getPrenomEmploye() + " " + this.employe.getNomEmploye()
-		+ " - Espace employé");
+	lblNom = new JLabel("Bonjour " + this.employe.getPrenomEmploye() + " " + this.employe.getNomEmploye() + " - Espace employé");
 	lblNom.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	lblNom.setHorizontalAlignment(SwingConstants.CENTER);
 	lblNom.setBounds(0, 11, 894, 50);
@@ -183,70 +182,73 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
 	contentPane.add(ongletMenu);
 	ongletMenu.setLayout(null);
 
-	pnlAcceuil = new JPanel();
-	pnlAcceuil.setBounds(0, 143, 180, 80);
-	ongletMenu.add(pnlAcceuil);
-	pnlAcceuil.addMouseListener(this);
-	pnlAcceuil.setLayout(null);
+	pnlTypeProduit = new JPanel();
+	pnlTypeProduit.setBounds(0, 143, 180, 80);
+	pnlTypeProduit.addMouseListener(this);
+	pnlTypeProduit.setLayout(null);
+	ongletMenu.add(pnlTypeProduit);
 
-	pnlPanier = new JPanel();
-	pnlPanier.setBounds(0, 307, 180, 80);
-	ongletMenu.add(pnlPanier);
-	pnlPanier.setLayout(null);
+	pnlEmployes = new JPanel();
+	pnlEmployes.setBounds(0, 307, 180, 80);
+	ongletMenu.add(pnlEmployes);
+	pnlEmployes.setLayout(null);
 
-	pnlBoutique = new JPanel();
-	pnlBoutique.setBounds(0, 225, 180, 80);
-	pnlBoutique.setBackground(new Color(200, 200, 200));
-	ongletMenu.add(pnlBoutique);
-	pnlBoutique.setLayout(null);
+	pnlProduits = new JPanel();
+	pnlProduits.setBounds(0, 225, 180, 80);
+	pnlProduits.setBackground(new Color(200, 200, 200));
+	ongletMenu.add(pnlProduits);
+	pnlProduits.setLayout(null);
 
 	pnlLogout = new JPanel();
 	pnlLogout.setBounds(0, 558, 180, 43);
 	ongletMenu.add(pnlLogout);
 	pnlLogout.setLayout(null);
-
+	
 	lblType = new JLabel("Ajout Type Produit");
 	lblType.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	lblType.setHorizontalAlignment(SwingConstants.CENTER);
 	lblType.setBounds(66, 0, 114, 80);
 	lblType.setBackground(new Color(200, 200, 200));
-	pnlAcceuil.add(lblType);
-
+	lblType.addMouseListener(this);
+	pnlTypeProduit.add(lblType);
+	
 	lblLogoType = new JLabel("");
 	lblLogoType.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogoType.setBounds(0, 0, 64, 80);
 	lblLogoType.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoType.png")));
-	pnlAcceuil.add(lblLogoType);
+	lblLogoType.addMouseListener(this);
+	pnlTypeProduit.add(lblLogoType);
+	
 
-	lblProduit = new JLabel("Ajout Produit");
-	lblProduit.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	lblProduit.setHorizontalAlignment(SwingConstants.CENTER);
-	lblProduit.setBounds(66, 0, 114, 80);
-	lblProduit.setBackground(new Color(200, 200, 200));
-	lblProduit.addMouseListener(this);
-	pnlBoutique.add(lblProduit);
+	lblProduits = new JLabel("Ajout Produit");
+	lblProduits.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	lblProduits.setHorizontalAlignment(SwingConstants.CENTER);
+	lblProduits.setBounds(66, 0, 114, 80);
+	lblProduits.setBackground(new Color(200, 200, 200));
+	pnlProduits.add(lblProduits);
 
 	lblLogoProduit = new JLabel("");
 	lblLogoProduit.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogoProduit.setBounds(0, 0, 64, 80);
 	lblLogoProduit.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoProduit.png")));
-	lblLogoProduit.addMouseListener(this);
-	pnlBoutique.add(lblLogoProduit);
+	pnlProduits.add(lblLogoProduit);
+	
 
-	lblPanier = new JLabel("Gestion employé");
-	lblPanier.setFont(new Font("Tahoma", Font.PLAIN, 13));
-	lblPanier.setHorizontalAlignment(SwingConstants.CENTER);
-	lblPanier.setBounds(66, 0, 114, 80);
-	lblPanier.setBackground(new Color(200, 200, 200));
-	lblPanier.addMouseListener(this);
-	pnlPanier.add(lblPanier);
+	lblEmployes = new JLabel("Gestion employé");
+	lblEmployes.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	lblEmployes.setHorizontalAlignment(SwingConstants.CENTER);
+	lblEmployes.setBounds(66, 0, 114, 80);
+	lblEmployes.setBackground(new Color(200, 200, 200));
+	lblEmployes.addMouseListener(this);
+	pnlEmployes.add(lblEmployes);
 
-	lblLogoPanier = new JLabel("");
-	lblLogoPanier.setHorizontalAlignment(SwingConstants.CENTER);
-	lblLogoPanier.setBounds(0, 0, 64, 80);
-	lblLogoPanier.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoEmployes.png")));
-	lblLogoPanier.addMouseListener(this);
-	pnlPanier.add(lblLogoPanier);
+	lblLogoEmployes = new JLabel("");
+	lblLogoEmployes.setHorizontalAlignment(SwingConstants.CENTER);
+	lblLogoEmployes.setBounds(0, 0, 64, 80);
+	lblLogoEmployes.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoEmployes.png")));
+	lblLogoEmployes.addMouseListener(this);
+	pnlEmployes.add(lblLogoEmployes);
+	
 
 	lblDeconnexion = new JLabel("d\u00E9connexion");
 	lblDeconnexion.setBounds(51, 0, 129, 43);
@@ -262,6 +264,7 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
 	lblLogoDeconnexion.addMouseListener(this);
 	pnlLogout.add(lblLogoDeconnexion);
 
+	
 	lblLogo = new JLabel("");
 	lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
 	lblLogo.setBounds(0, 0, 180, 117);
@@ -279,6 +282,7 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
 	lblOption.setBounds(49, 0, 131, 43);
 	lblOption.addMouseListener(this);
 	pnlSettings.add(lblOption);
+	
 
 	lblLogoOption = new JLabel("");
 	lblLogoOption.setHorizontalAlignment(SwingConstants.CENTER);
@@ -325,16 +329,16 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
 	if (e.getComponent() == this.btnAcheter) {
 	    JOptionPane.showMessageDialog(this, "Produit ajouté !");
 	    DaoDriveExpress.ajoutProduit(connect, new Produit(1, (TypeProduit) this.cbType.getSelectedItem(), this.txtLibType.getText(), this.txtDesc.getText(), Double.parseDouble(this.txtPrix.getText()), 0));
-	    AjoutTypeProduit ap = new AjoutTypeProduit(connect, getLocationOnScreen().x, getLocationOnScreen().y, this.employe);
+	    AjoutProduit ap = new AjoutProduit(connect, getLocationOnScreen().x, getLocationOnScreen().y, this.employe);
 	    ap.setUndecorated(true);
 	    ap.setVisible(true);
 	    dispose();
 	}
 	
 	try {
-	 // click pour le panel Type
-	    if ((JLabel) e.getComponent() == this.lblProduit || (JLabel) e.getComponent() == this.lblLogoProduit) {
-		AjoutProduit ap = new AjoutProduit(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.employe);
+	    // click pour le panel Type
+	    if ((JLabel) e.getComponent() == this.lblType || (JLabel) e.getComponent() == this.lblLogoType) {
+		AjoutTypeProduit ap = new AjoutTypeProduit(this.connect, getLocationOnScreen().x, getLocationOnScreen().y, this.employe);
 		ap.setUndecorated(true);
 		ap.setVisible(true);
 		dispose();
@@ -415,16 +419,16 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
 		this.lblLogoOption.setBackground(new Color(220, 220, 220));
 	    }
 
-	    // Hover pour le panel Boutique
-	    if ((JLabel) e.getComponent() == this.lblProduit || (JLabel) e.getComponent() == this.lblLogoProduit) {
-		this.pnlBoutique.setBackground(new Color(220, 220, 220));
-		this.lblProduit.setBackground(new Color(220, 220, 220));
-		this.lblLogoProduit.setBackground(new Color(220, 220, 220));
+	    // Hover pour le panel Type Type Produit
+	    if ((JLabel) e.getComponent() == this.lblType || (JLabel) e.getComponent() == this.lblLogoType) {
+		this.pnlTypeProduit.setBackground(new Color(220, 220, 220));
+		this.lblLogoType.setBackground(new Color(220, 220, 220));
+		this.lblType.setBackground(new Color(220, 220, 220));
 	    }
-	    // Hover pour le panel Panier
-	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
-		this.lblPanier.setBackground(new Color(220, 220, 220));
-		this.lblLogoPanier.setBackground(new Color(220, 220, 220));
+	    // Hover pour le panel Employes
+	    if ((JLabel) e.getComponent() == this.lblEmployes || (JLabel) e.getComponent() == this.lblLogoEmployes) {
+		this.lblEmployes.setBackground(new Color(220, 220, 220));
+		this.lblLogoEmployes.setBackground(new Color(220, 220, 220));
 	    }
 	} catch (Exception e2) {
 
@@ -449,16 +453,16 @@ public class AjoutProduit extends JFrame implements MouseListener, MouseMotionLi
 		this.lblOption.setBackground(new Color(240, 240, 240));
 		this.lblLogoOption.setBackground(new Color(240, 240, 240));
 	    }
-	    // Hover pour le panel boutique
-	    if ((JLabel) e.getComponent() == this.lblProduit || (JLabel) e.getComponent() == this.lblLogoProduit) {
-		this.pnlBoutique.setBackground(new Color(240, 240, 240));
-		this.lblProduit.setBackground(new Color(240, 240, 240));
-		this.lblLogoProduit.setBackground(new Color(240, 240, 240));
+	    // Hover pour le panel Type Produit
+	    if ((JLabel) e.getComponent() == this.lblType || (JLabel) e.getComponent() == this.lblLogoType) {
+		this.pnlTypeProduit.setBackground(new Color(240, 240, 240));
+		this.lblLogoType.setBackground(new Color(240, 240, 240));
+		this.lblType.setBackground(new Color(240,240,240));
 	    }
-	    // Hover pour le panel boutique
-	    if ((JLabel) e.getComponent() == this.lblPanier || (JLabel) e.getComponent() == this.lblLogoPanier) {
-		this.lblPanier.setBackground(new Color(240, 240, 240));
-		this.lblLogoPanier.setBackground(new Color(240, 240, 240));
+	    // Hover pour le panel Produit
+	    if ((JLabel) e.getComponent() == this.lblEmployes || (JLabel) e.getComponent() == this.lblLogoEmployes) {
+		this.lblEmployes.setBackground(new Color(240, 240, 240));
+		this.lblLogoEmployes.setBackground(new Color(240, 240, 240));
 	    }
 	} catch (Exception e2) {
 

@@ -258,7 +258,6 @@ public class DaoDriveExpress {
     // get les type de produits
     public static Vector<TypeProduit> getTypeProduit(Connection connect) {
 	Vector<TypeProduit> res = new Vector<TypeProduit>();
-
 	try {
 	    Statement stLienBD = connect.createStatement();
 	    String req = "SELECT * FROM TYPEPRODUIT";
@@ -269,7 +268,6 @@ public class DaoDriveExpress {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-
 	return res;
     }
 

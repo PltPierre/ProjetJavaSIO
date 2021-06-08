@@ -71,6 +71,12 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
     private JTextField txtVille;
     private JTextField txtAdresse;
     private JButton btnValider;
+    private JLabel lblType;
+    private JLabel lblLogoType;
+    private JLabel lblProduit;
+    private JLabel lblLogoProduit;
+    private JLabel lblGestionEmployes;
+    private JLabel lblLogoEmployes;
 
     // constructeur (page commune entre employé et user)
     public OptionPage(Connection connection, int posX, int posY, Object person) {
@@ -86,7 +92,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	    this.connect = connection;
 	}
 
-	//regarde si c'est un utilisateur ou un employé
+	// regarde si c'est un utilisateur ou un employé
 	if (person instanceof User) {
 	    this.user = (User) person;
 	} else {
@@ -240,7 +246,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	ongletMenu.add(pnlLogout);
 	pnlLogout.setLayout(null);
 
-	//bouton sur le coté différents si user ou employé
+	// bouton sur le coté différents si user ou employé
 	if (person instanceof User) {
 
 	    pnlPanier = new JPanel();
@@ -280,7 +286,6 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	    lblPanier.setFont(new Font("Tahoma", Font.PLAIN, 20));
 	    lblPanier.setHorizontalAlignment(SwingConstants.CENTER);
 	    lblPanier.setBounds(66, 0, 114, 80);
-	    lblPanier.setBackground(new Color(200, 200, 200));
 	    lblPanier.addMouseListener(this);
 	    pnlPanier.add(lblPanier);
 
@@ -291,18 +296,19 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	    lblLogoPanier.addMouseListener(this);
 	    pnlPanier.add(lblLogoPanier);
 
-	} else if (person instanceof Employe) {
-	    
+	} else if (person instanceof Employe && ((Employe) person).getLePoste().getIdPoste() == 2) {
+
 	    lblAcceuil = new JLabel("Livraisons Ajout\u00E9es");
 	    lblAcceuil.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	    lblAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
 	    lblAcceuil.setBounds(66, 0, 114, 80);
-	    lblAcceuil.setBackground(new Color(200, 200, 200));
+	    lblAcceuil.addMouseListener(this);
 	    pnlAcceuil.add(lblAcceuil);
 
 	    lblLogoAcceuil = new JLabel("");
 	    lblLogoAcceuil.setHorizontalAlignment(SwingConstants.CENTER);
 	    lblLogoAcceuil.setBounds(0, 0, 64, 80);
+	    lblLogoAcceuil.addMouseListener(this);
 	    lblLogoAcceuil.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LivraisonAjoutee.png")));
 	    pnlAcceuil.add(lblLogoAcceuil);
 
@@ -310,7 +316,6 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	    lblBoutique.setFont(new Font("Tahoma", Font.PLAIN, 11));
 	    lblBoutique.setHorizontalAlignment(SwingConstants.CENTER);
 	    lblBoutique.setBounds(66, 0, 114, 80);
-	    lblBoutique.setBackground(new Color(200, 200, 200));
 	    lblBoutique.addMouseListener(this);
 	    pnlBoutique.add(lblBoutique);
 
@@ -320,6 +325,54 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	    lblLogoBoutique.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LivraisonAttente.png")));
 	    lblLogoBoutique.addMouseListener(this);
 	    pnlBoutique.add(lblLogoBoutique);
+	} else if (person instanceof Employe && ((Employe) person).getLePoste().getIdPoste() == 1) {
+
+	    pnlPanier = new JPanel();
+	    pnlPanier.setBounds(0, 307, 180, 80);
+	    ongletMenu.add(pnlPanier);
+	    pnlPanier.setLayout(null);
+
+	    lblType = new JLabel("Ajout Type Produit");
+	    lblType.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	    lblType.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblType.setBounds(66, 0, 114, 80);
+	    lblType.addMouseListener(this);
+	    pnlAcceuil.add(lblType);
+
+	    lblLogoType = new JLabel("");
+	    lblLogoType.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblLogoType.setBounds(0, 0, 64, 80);
+	    lblLogoType.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoType.png")));
+	    lblLogoType.addMouseListener(this);
+	    pnlAcceuil.add(lblLogoType);
+
+	    lblProduit = new JLabel("Ajout Produit");
+	    lblProduit.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    lblProduit.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblProduit.setBounds(66, 0, 114, 80);
+	    lblProduit.addMouseListener(this);
+	    pnlBoutique.add(lblProduit);
+
+	    lblLogoProduit = new JLabel("");
+	    lblLogoProduit.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblLogoProduit.setBounds(0, 0, 64, 80);
+	    lblLogoProduit.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoProduit.png")));
+	    lblLogoProduit.addMouseListener(this);
+	    pnlBoutique.add(lblLogoProduit);
+
+	    lblGestionEmployes = new JLabel("Gestion employé");
+	    lblGestionEmployes.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	    lblGestionEmployes.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblGestionEmployes.setBounds(66, 0, 114, 80);
+	    lblGestionEmployes.addMouseListener(this);
+	    pnlPanier.add(lblGestionEmployes);
+
+	    lblLogoEmployes = new JLabel("");
+	    lblLogoEmployes.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblLogoEmployes.setBounds(0, 0, 64, 80);
+	    lblLogoEmployes.setIcon(new ImageIcon(MainPage.class.getResource("/ihm/media/LogoEmployes.png")));
+	    lblLogoEmployes.addMouseListener(this);
+	    pnlPanier.add(lblLogoEmployes);
 	}
 
 	lblDeconnexion = new JLabel("D\u00E9connexion");
@@ -414,7 +467,7 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 	// TODO Stub de la méthode généré automatiquement
 
 	if (e.getSource() == btnValider) {
-	    
+
 	    // check si les champs sont bon
 	    boolean enregistrementValide = false;
 	    if (DaoDriveExpress.validate(this.txtMail.getText())) {
@@ -505,6 +558,35 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 		lp.setVisible(true);
 		dispose();
 	    }
+	} else if (this.user instanceof Employe && ((Employe) this.user).getLePoste().getIdPoste() == 1) {
+	    try {
+		// click pour le panel Produit
+		if ((JLabel) e.getComponent() == this.lblProduit || (JLabel) e.getComponent() == this.lblLogoProduit) {
+		    AjoutProduit produit = new AjoutProduit(this.connect, getLocationOnScreen().x,
+			    getLocationOnScreen().y, (Employe) this.user);
+		    produit.setUndecorated(true);
+		    produit.setVisible(true);
+		    dispose();
+		}
+		// click pour le panel option
+		if ((JLabel) e.getComponent() == this.lblLogoType || (JLabel) e.getComponent() == this.lblType) {
+		    AjoutTypeProduit typePage = new AjoutTypeProduit(this.connect, getLocationOnScreen().x,
+			    getLocationOnScreen().y, (Employe) this.user);
+		    typePage.setUndecorated(true);
+		    typePage.setVisible(true);
+		    dispose();
+		}
+		// click pour le panel deconnexion
+		if ((JLabel) e.getComponent() == this.lblDeconnexion
+			|| (JLabel) e.getComponent() == this.lblLogoDeconnexion) {
+		    LoginPage lp = new LoginPage(this.connect, getLocationOnScreen().x, getLocationOnScreen().y);
+		    lp.setUndecorated(true);
+		    lp.setVisible(true);
+		    dispose();
+		}
+	    } catch (Exception e2) {
+
+	    }
 	}
 
     }
@@ -574,6 +656,24 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 		this.lblPanier.setBackground(new Color(220, 220, 220));
 		this.lblLogoPanier.setBackground(new Color(220, 220, 220));
 	    }
+	    // Hover pour le panel typeProduit
+	    if ((JLabel) e.getComponent() == this.lblType || (JLabel) e.getComponent() == this.lblLogoType) {
+		this.pnlAcceuil.setBackground(new Color(220, 220, 220));
+		this.lblType.setBackground(new Color(220, 220, 220));
+		this.lblLogoType.setBackground(new Color(220, 220, 220));
+	    }
+	    // Hover pour le panel Produit
+	    if ((JLabel) e.getComponent() == this.lblLogoProduit || (JLabel) e.getComponent() == this.lblProduit) {
+		this.pnlBoutique.setBackground(new Color(220, 220, 220));
+		this.lblLogoProduit.setBackground(new Color(220, 220, 220));
+		this.lblProduit.setBackground(new Color(220, 220, 220));
+	    }
+	    // Hover pour le panel Employes
+	    if ((JLabel) e.getComponent() == this.lblLogoEmployes || (JLabel) e.getComponent() == this.lblGestionEmployes) {
+		this.pnlPanier.setBackground(new Color(220, 220, 220));
+		this.lblLogoEmployes.setBackground(new Color(220, 220, 220));
+		this.lblGestionEmployes.setBackground(new Color(220, 220, 220));
+	    }
 	} catch (Exception e2) {
 
 	}
@@ -609,6 +709,24 @@ public class OptionPage extends JFrame implements MouseListener, MouseMotionList
 		this.pnlPanier.setBackground(new Color(240, 240, 240));
 		this.lblPanier.setBackground(new Color(240, 240, 240));
 		this.lblLogoPanier.setBackground(new Color(240, 240, 240));
+	    }
+	    // Hover pour le panel typeProduit
+	    if ((JLabel) e.getComponent() == this.lblType || (JLabel) e.getComponent() == this.lblLogoType) {
+		this.pnlAcceuil.setBackground(new Color(240, 240, 240));
+		this.lblType.setBackground(new Color(240, 240, 240));
+		this.lblLogoType.setBackground(new Color(240, 240, 240));
+	    }
+	    // Hover pour le panel Produit
+	    if ((JLabel) e.getComponent() == this.lblLogoProduit || (JLabel) e.getComponent() == this.lblProduit) {
+		this.pnlBoutique.setBackground(new Color(240, 240, 240));
+		this.lblLogoProduit.setBackground(new Color(240, 240, 240));
+		this.lblProduit.setBackground(new Color(240, 240, 240));
+	    }
+	    // Hover pour le panel Employes
+	    if ((JLabel) e.getComponent() == this.lblLogoEmployes || (JLabel) e.getComponent() == this.lblGestionEmployes) {
+		this.pnlPanier.setBackground(new Color(240, 240, 240));
+		this.lblLogoEmployes.setBackground(new Color(240, 240, 240));
+		this.lblGestionEmployes.setBackground(new Color(240, 240, 240));
 	    }
 	} catch (Exception e2) {
 
